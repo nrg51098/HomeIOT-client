@@ -52,11 +52,11 @@ export const DeviceDetails = (props) => {
     }, [device])
 
     useEffect(() => {
-        const body = { "token": `${localStorage.getItem("rare_user_id")}` }
+        const body = { "token": `${localStorage.getItem("homeiot_user_id")}` }
         fetch("http://localhost:8000/get_current_user", {
             method: "POST",
             headers: {
-                "Authorization": `Token ${localStorage.getItem("rare_user_id")}`
+                "Authorization": `Token ${localStorage.getItem("homeiot_user_id")}`
             },
             body: JSON.stringify(body)
         })
@@ -103,7 +103,7 @@ export const DeviceDetails = (props) => {
                 <div className="d-flex flex-row justify-content-between align-items-center">
                     <div>
                         <small >Published on {device.publication_date} </small>
-                        <small className="d-block"> By {device.rareuser && device.rareuser.user.first_name} {device.rareuser && device.rareuser.user.last_name}</small>
+                        <small className="d-block"> By {device.homeiotuser && device.homeiotuser.user.first_name} {device.homeiotuser && device.homeiotuser.user.last_name}</small>
                     </div>
                     <div>
                         <button className="btn btn-outline-primary mt-0" onClick={() => history.push(`/device/${device.id}/comments`)}>View Comments</button>

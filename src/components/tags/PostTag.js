@@ -3,7 +3,7 @@ import "./tag.css"
 
 export default (props) => (
   <div className="tags">
-    <div className="tagname">{props.postTag.name}</div>
-    <div className="tagicon"><i className="far fa-trash-alt" id={props.postTag.id} data-postid={props.postTag.postId} onClick={props.deleteAPostTag}></i></div>
+    <div className="tagname">{props.deviceTag.name}</div>
+    <div className="tagicon"><i className="far fa-trash-alt" id={props.deviceTag.id} data-deviceid={props.deviceTag.deviceId} onClick={props.deleteAPostTag}></i></div>
   </div>
 )

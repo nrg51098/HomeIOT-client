@@ -11,6 +11,10 @@ import { DeviceProvider } from "./devices/DeviceProvider.js"
 import { DeviceList } from "./devices/DeviceList.js"
 import { DeviceTable } from "./devices/DeviceTable.js"
 import { DeviceForm } from "./devices/DeviceForm.js"
+import { LocationList } from "./locations/LocationList.js"
+import { LocationProvider } from "./locations/LocationProvider.js"
+import { SensortypeList } from "./sensortypes/SensortypeList.js"
+import { SensortypeProvider } from "./sensortypes/SensortypeProvider.js"
 
 
 export const ApplicationViews = () => {
@@ -71,7 +75,39 @@ export const ApplicationViews = () => {
 
                         
                 </DeviceProvider> 
-                </TagProvider>    
+                </TagProvider> 
+                <LocationProvider>
+                    <Route exact path="/locations" render={(props) => {
+                        return <>
+                            {
+                                isAdmin
+                                    ? <main className="locationsContainer">
+                                        <h1>Available Locations</h1>
+                                        <LocationList {...props} />
+                                    </main>
+                                    : <Redirect to="/" />
+                            }
+                        </>
+                    }} />  
+                
+                
+                </LocationProvider>  
+                <SensortypeProvider>
+                    <Route exact path="/sensortypes" render={(props) => {
+                        return <>
+                            {
+                                isAdmin
+                                    ? <main className="sensortypesContainer">
+                                        <h1>Available Sensortypes</h1>
+                                        <SensortypeList {...props} />
+                                    </main>
+                                    : <Redirect to="/" />
+                            }
+                        </>
+                    }} />  
+                
+                
+                </SensortypeProvider>  
                 {/* <Route exact path='/users' render={() => {
                 return <>
                     {

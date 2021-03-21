@@ -36,34 +36,36 @@ export const DeviceTable = () => {
         getUserId()
     }, [])
 
-    // useEffect(() => {
-    //     devices.sort((a, b) => (a.publication_date > b.publication_date) ? -1 : 1)
-    //     const matchingDevices = devices.filter(device => device.title.toLowerCase().includes(searchTerms.toLowerCase()))
-    //     let validDevices = []
-    //     isAdmin ? 
-    //     (validDevices = matchingDevices.filter((device) => (Date.parse(device.publication_date) < Date.now()))) :
-    //     (validDevices = matchingDevices.filter((device) => (Date.parse(device.publication_date) < Date.now()) && (device.approved === true)))      
-    //     setFiltered(validDevices)
-    // }, [searchTerms])
+    useEffect(() => {
+        devices.sort((a, b) => (a.created_datetime > b.created_datetime) ? -1 : 1)
+        const matchingDevices = devices.filter(device => device.name.toLowerCase().includes(searchTerms.toLowerCase()))
+        let validDevices = []
+        isAdmin ? 
+        (validDevices = matchingDevices.filter((device) => (Date.parse(device.created_datetime) < Date.now()))) :
+        (validDevices = matchingDevices.filter((device) => (Date.parse(device.created_datetime) < Date.now())))      
+        setFiltered(validDevices)
+    }, [searchTerms])
 
-    // useEffect(() => {
-    //     devices.sort((a, b) => (a.publication_date > b.publication_date) ? -1 : 1)
-    //     const matchingTags = tags.filter(tag => tag.label.includes(searchTags))
-    //     let valid
-    // })
+    
 
     useEffect(() => {
         devices.sort((a, b) => (a.created_datetime > b.created_datetime) ? -1 : 1)
         let validDevices = []
         isAdmin ?
         (validDevices = devices.filter((device) => (Date.parse(device.created_datetime) < Date.now()))) :
-        (validDevices = devices.filter((device) => (Date.parse(device.created_datetime) < Date.now()) && (device.approved === true)))
+        (validDevices = devices.filter((device) => (Date.parse(device.created_datetime) < Date.now())))
         setFiltered(validDevices)
     }, [devices])
 
-    const handleIsApprovedUpdate = e => {
+    const handleIsActiveUpdate = e => {
         const deviceId = parseInt(e.target.value)
-        const partialObject = {"approved" : e.target.checked }    
+        const partialObject = {"is_active" : e.target.checked }    
+        partialyUpdateDevice(deviceId, partialObject)        
+    }
+
+    const handleIsPublicUpdate = e => {
+        const deviceId = parseInt(e.target.value)
+        const partialObject = {"is_public" : e.target.checked }    
         partialyUpdateDevice(deviceId, partialObject)        
     }
 
@@ -99,12 +101,13 @@ export const DeviceTable = () => {
                             <th scope="col">Location</th>
                             <th scope="col">Sensortype</th>
                             <th scope="col">Tags</th>
-                            {isAdmin ? (<th scope="col">Is_active</th>) : (<></>) }
+                            {isAdmin ? (<th scope="col">Is_Active</th>) : (<></>) }
+                            {isAdmin ? (<th scope="col">Is_Public</th>) : (<></>) }
                         </tr>
                     </thead>
                     <tbody>
                         {
-                            devices.map(device => (
+                            filteredDevices.map(device => (
                                 <tr key={device.id}>
                                     {((device.appuser && device.appuser.id) == userId) || (isAdmin) ? (
                                         <td className="p-0">
@@ -123,11 +126,14 @@ export const DeviceTable = () => {
                                     <td>{device.created_datetime}</td>
                                     <td>{device.location.label}</td>
                                     <td>{device.sensor_type.label}</td>
-                                    <td>{device.tags && device.tags.map(tag => (
+                                    <td>{device.tag && device.tag.map(tag => (
                                         <div key={tag.id}>{tag.label}</div>
                                     ))}</td>
                                     {isAdmin ? (<td>
-                                        <input type="checkbox" name="isApproved" checked={device.approved} value={device.id} onChange={handleIsApprovedUpdate} />
+                                        <input type="checkbox" name="isActive" checked={device.is_active} value={device.id} onChange={handleIsActiveUpdate} />
+                                        </td>) : (<></>) }
+                                    {isAdmin ? (<td>
+                                        <input type="checkbox" name="isPublic" checked={device.is_public} value={device.id} onChange={handleIsPublicUpdate} />
                                         </td>) : (<></>) }
                                 </tr>
                             ))
