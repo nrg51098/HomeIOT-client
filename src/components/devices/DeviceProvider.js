@@ -52,10 +52,6 @@ export const DeviceProvider = (props) => {
             .then(res => setDevices(res.devices))
     }
 
-    // const getDeviceById = (id) => {
-    //     return fetch(`http://localhost:8088/devices/${id}?_expand=location&_expand=customer`)
-    //         .then(res => res.json())
-    // }
 
     const getDeviceById = (id) => {
         return fetch(`http://localhost:8000/devices/${id}`, {

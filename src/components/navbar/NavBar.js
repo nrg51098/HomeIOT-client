@@ -31,6 +31,11 @@ export const NavBar = () => {
                         <Link to="/user/devices" className="btn btn-outline-primary w-100">My Devices</Link>
                     </div>
                 </li>
+                <li className="navbar__item mx-3">
+                    <div className="d-flex justify-content-center">
+                        <Link to="/subscriptions" className="btn btn-outline-primary w-100">My Subscriptions</Link>
+                    </div>
+                </li>
                 {isAdmin ? (
                     <li className="navbar__item mx-3">
                         <div className="d-flex justify-content-center">
@@ -60,6 +65,11 @@ export const NavBar = () => {
                         </div>
                     </li>
                 ) : (<></>)}
+                <li className="navbar__item mx-3">
+                    <div className="d-flex justify-content-center">
+                        <Link to="/userpreferences" className="btn btn-outline-primary w-100">User Preferences</Link>
+                    </div>
+                </li>
                 {
                     (localStorage.getItem("homeiot_user_id") !== null) ?
                         <li className="navbar__item ml-auto mr-3">
