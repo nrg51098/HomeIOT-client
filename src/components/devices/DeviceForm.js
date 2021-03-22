@@ -2,6 +2,9 @@ import React, { useContext, useState, useEffect, Fragment } from "react"
 import { useHistory } from 'react-router-dom'
 import { DeviceContext } from "./DeviceProvider"
 import { TagContext } from "../tags/TagProvider"
+import { LocationContext } from "../locations/LocationProvider"
+import { SensortypeContext } from "../sensortypes/SensortypeProvider"
+
 
 
 export const DeviceForm = (props) => {
@@ -11,6 +14,8 @@ export const DeviceForm = (props) => {
 
     // Tags data
     const { tags, getTags } = useContext(TagContext)
+    const { locations, getLocations } = useContext(LocationContext)
+    const { sensortypes, getSensortypes } = useContext(SensortypeContext)
 
 
     // Component state
@@ -74,16 +79,19 @@ export const DeviceForm = (props) => {
         if (editMode) {
             const deviceId = parseInt(props.match.params.deviceId)
             const selectedDevice = devices.find(a => a.id === deviceId) || {}
-            selectedDevice.category
-                ? selectedDevice.category_id = selectedDevice.category.id
-                : selectedDevice.category_id = 0
+            selectedDevice.location
+                ? selectedDevice.location_id = selectedDevice.location.id
+                : selectedDevice.location_id = 0
+            selectedDevice.sensor_type
+                ? selectedDevice.sensor_type_id = selectedDevice.sensor_type.id
+                : selectedDevice.sensor_type_id = 0
             setDevice(selectedDevice)
         }
     }
 
     const createNewTags = () => {
         const tempTags = []
-        tags && tags.map(tag => tempTags.push({ id: tag.id, label: tag.label, isChecked: device.tags && device.tags.find(t => t.id === tag.id) ? true : false }))
+        tags && tags.map(tag => tempTags.push({ id: tag.id, label: tag.label, isChecked: device.tag && device.tag.find(t => t.id === tag.id) ? true : false }))
         setNewTags(tempTags)
     }
 
@@ -91,6 +99,8 @@ export const DeviceForm = (props) => {
     useEffect(() => {
         getDevices();
         getTags();
+        getLocations();
+        getSensortypes();
         
     }, [])
 
@@ -112,14 +122,14 @@ export const DeviceForm = (props) => {
             updateDevice({
                 id: device.id,
                 name: device.name,
-                location_id: device.location_id,
-                sensor_type_id: device.sensor_type_id,
+                location_id: parseInt(device.location_id),
+                sensor_type_id: parseInt(device.sensor_type_id),
                 hardware_number: device.hardware_number, // category_id: parseInt(device.category_id),
                 created_datetime: device.created_datetime,
-                appuser_id: device.homeiotuser.id,
+                appuser_id: device.appuser.id,
                 device_img_url: device.device_img_url,
-                is_active:device.is_active,
-                is_public:device.is_public,
+                is_active: device.is_active,
+                is_public: device.is_public,
                 tag: deviceTagsArray
             })
                 .then(() => props.history.push(`/devices/${device.id}`))
@@ -127,8 +137,8 @@ export const DeviceForm = (props) => {
             // POST
             addDevice({
                 name: device.name,
-                location_id: device.location_id,
-                sensor_type_id: device.sensor_type_id,
+                location_id: parseInt(device.location_id),
+                sensor_type_id: parseInt(device.sensor_type_id),
                 hardware_number: device.hardware_number,
                 device_img_url: device.device_img_url,
                 is_active:device.is_active,
@@ -162,7 +172,7 @@ export const DeviceForm = (props) => {
                         </input>
                     </div>
                 </fieldset>
-                {/* <fieldset>
+                <fieldset>
                     <div className="form-group">
                         <select name="location_id" className="form-control w-50" value={device.location_id || ((device.location && device.location.id) || "0")} onChange={handleControlledInputChange}>
                             <option value="0" disabled>Location Select</option>
@@ -181,7 +191,7 @@ export const DeviceForm = (props) => {
                             ))}
                         </select>
                     </div>
-                </fieldset>                 */}
+                </fieldset>                
                 <fieldset>
                     <div className="form-group">
                         <input type="text" name="hardware_number" className="form-control" required 
@@ -193,7 +203,8 @@ export const DeviceForm = (props) => {
                 </fieldset>
                 <fieldset>
                     <div className="d-flex flex-row flex-wrap form-check form-check-inline mb-3">
-                        <input type="checkbox" name="is_active" className="form-check-input" defaultValue={device.is_active} required                         
+                        
+                        <input type="checkbox" name="is_active" className="form-check-input" checked={device.is_active} value={device.is_active} required                         
                             placeholder="Is Active"                            
                             onChange={handleCheckboxChange}>
                         </input>
@@ -202,7 +213,8 @@ export const DeviceForm = (props) => {
                 </fieldset>
                 <fieldset>
                     <div className="d-flex flex-row flex-wrap form-check form-check-inline mb-3">
-                        <input type="checkbox" name="is_public" className="form-check-input" defaultValue={device.is_public} required
+                        
+                        <input type="checkbox" name="is_public" className="form-check-input" checked={device.is_public} value={device.is_public} required
                             placeholder="Is Public"
                             onChange={handleCheckboxChange}>
                         </input>

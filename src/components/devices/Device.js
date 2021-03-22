@@ -5,20 +5,20 @@ import { Link } from "react-router-dom"
 export default (props) => (
     <section className="device p-5 mb-5 border">
         <div className="d-flex flex-row justify-content-between">
-            <h3 className="device__title">
+            <h3 className="device__name">
                 <Link to={`/devices/${props.device.id}`}>
-                    {props.device.title}
+                    {props.device.name}
                 </Link>
             </h3>
-            <small>Publication Date: {props.device.publication_date}</small>
+            <small>Create DateTime: {props.device.created_datetime}</small>
         </div>
         <div className="d-flex flex-row justify-content-center">
             <img className="mb-5 img-fluid" src="https://via.placeholder.com/400x200" />
         </div>
         <div className="d-flex flex-row justify-content-between align-items-center">
-            <div className="">Author: {props.device.homeiotuser && props.device.homeiotuser.user.first_name} {props.device.homeiotuser && props.device.homeiotuser.user.last_name}</div>
+            <div className="">Author: {props.device.appuser && props.device.appuser.user.first_name} {props.device.appuser && props.device.appuser.user.last_name}</div>
             <div className="d-flex flex-row justify-content-between align-items-center">
-                <div className="border rounded-pill p-2"><small># Reaction Count</small></div>
+                
                 <Link to={`/devices/edit/${props.device.id}`}>
                     <div className="deviceicon"><i className="fas fa-cog fa-2x"></i></div>
                 </Link>

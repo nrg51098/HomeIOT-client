@@ -5,6 +5,7 @@ export const AuthContext = React.createContext()
 export const AuthProvider = (props) => {
     const [isAdmin, setIsAdmin] = useState(false);
     const [users, setUsers] = useState([])
+    const [currentUser, setCurrentUserId] = useState({})
     // const [subscriptions, setSubscriptions] = useState([])
 
     const getUserAdminStatus = () => {
@@ -12,6 +13,7 @@ export const AuthProvider = (props) => {
         return fetch("http://localhost:8000/is_admin", {
             method: "POST",
             headers: {
+                "Content-Type": "application/json",
                 "Authorization": `Token ${localStorage.getItem("homeiot_user_id")}`
             },
             body: JSON.stringify(body)
@@ -20,9 +22,23 @@ export const AuthProvider = (props) => {
             .then(response => setIsAdmin(response.is_user_admin))
     }
 
+    const getCurrentUser = () => {
+        const body = { "token": `${localStorage.getItem("rare_user_id")}` }
+        return fetch("http://localhost:8000/get_current_user", {
+            method: "POST",
+            headers: {
+                "Authorization": `Token ${localStorage.getItem("rare_user_id")}`
+            },
+            body: JSON.stringify(body)
+        })
+            .then(response => response.json())
+            .then(setCurrentUserId)
+    }
+
     const getUsers = () => {
         return fetch("http://localhost:8000/users", {
             headers: {
+                "Content-Type": "application/json",
                 "Authorization": `Token ${localStorage.getItem("homeiot_user_id")}`
             }
         })
@@ -33,23 +49,24 @@ export const AuthProvider = (props) => {
     const getUserById = (id) => {
         return fetch(`http://localhost:8000/users/${id}`, {
             headers: {
+                "Content-Type": "application/json",
                 "Authorization": `Token ${localStorage.getItem("homeiot_user_id")}`
             }
         })
             .then(res => res.json())
     }
 
-    // const partialyUpdateUser = (homeiotuserId, partialBody) => {
-    //     return fetch(`http://localhost:8000/users/${homeiotuserId}`, {
-    //         method: "PATCH",
-    //         headers: {
-    //             "Content-Type": "application/json",
-    //             "Authorization": `Token ${localStorage.getItem("homeiot_user_id")}`
-    //         },
-    //         body: JSON.stringify(partialBody)
-    //     })
-    //         .then(getUsers)
-    // }
+    const partialyUpdateUser = (homeiotuserId, partialBody) => {
+        return fetch(`http://localhost:8000/users/${homeiotuserId}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Token ${localStorage.getItem("homeiot_user_id")}`
+            },
+            body: JSON.stringify(partialBody)
+        })
+            .then(getUsers)
+    }
 
     // const getSubscriptions = () => {
     //     return fetch("http://localhost:8000/subscriptions", {
@@ -87,7 +104,7 @@ export const AuthProvider = (props) => {
 
     return (
         <AuthContext.Provider value={{
-            getUserAdminStatus, isAdmin, getUsers, users, getUserById
+            getUserAdminStatus, isAdmin, getUsers, users, getUserById, partialyUpdateUser, getCurrentUser
             
         }}>
             {props.children}
