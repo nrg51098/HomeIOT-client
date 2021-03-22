@@ -11,6 +11,12 @@ import { DeviceProvider } from "./devices/DeviceProvider.js"
 import { DeviceList } from "./devices/DeviceList.js"
 import { DeviceTable } from "./devices/DeviceTable.js"
 import { DeviceForm } from "./devices/DeviceForm.js"
+import { LocationList } from "./locations/LocationList.js"
+import { LocationProvider } from "./locations/LocationProvider.js"
+import { SensortypeList } from "./sensortypes/SensortypeList.js"
+import { SensortypeProvider } from "./sensortypes/SensortypeProvider.js"
+import { UserTable } from "./users/UserTable.js"
+import { UserProfile } from "./users/UserProfile.js"
 
 
 export const ApplicationViews = () => {
@@ -37,41 +43,99 @@ export const ApplicationViews = () => {
                             }
                         </>
                     }} />
-                 
+                            <LocationProvider>
+                                <SensortypeProvider>
+                                    <DeviceProvider>
+                                            <Route exact path="/">
+                                                <DeviceList />
+                                            </Route>
+                                            <Route exact path="/user/devices" render={(props) => 
+                                            { return <>
+                                            {
+                                                <DeviceList {...props} />
+                                            }
+                                                </>
+                                            }} />
+                                            
+                                            <Route path="/user/devices/:userId(\d+)" render={props => <DeviceList {...props} />} />
+                                            <Route exact path="/devices" render={(props) => {
+                                                return <>
+                                                    <main className="deviceContainer">
+                                                        <h1>Devices</h1>
 
-                <DeviceProvider>
-                        <Route exact path="/">
-                            <DeviceList />
-                        </Route>
-                        <Route exact path="/user/devices" render={props => <DeviceList {...props} />} />
-                        <Route path="/user/devices/:userId(\d+)" render={props => <DeviceList {...props} />} />
-                        <Route exact path="/devices" render={(props) => {
-                            return <>
-                                <main className="deviceContainer">
-                                    <h1>Devices</h1>
+                                                        <DeviceSearch />
+                                                        <DeviceTable />
+                                                    </main>
 
-                                    <DeviceSearch />
-                                    <DeviceTable />
-                                </main>
+                                                </>
+                                            }} />
 
-                            </>
-                        }} />
+                                            <Route exact path="/devices/create" render={(props) => {
+                                                return <DeviceForm {...props} />
+                                            }} />
 
-                        <Route exact path="/devices/create" render={(props) => {
-                            return <DeviceForm {...props} />
-                        }} />
+                                            <Route path="/devices/:deviceId(\d+)" render={
+                                                    props => <DeviceDetails {...props} />
+                                                } />
+                                                
+                                            <Route path="/devices/edit/:deviceId(\d+)" render={
+                                                    props => <DeviceForm {...props} />
+                                                } />
 
-                        <Route path="/devices/:deviceId(\d+)" render={
-                                props => <DeviceDetails {...props} />
-                            } />
-                            
-                        <Route path="/devices/edit/:deviceId(\d+)" render={
-                                props => <DeviceForm {...props} />
-                            } />
+                                            
+                                    </DeviceProvider> 
+                                </SensortypeProvider>
+                            </LocationProvider>                        
+                </TagProvider> 
+                <LocationProvider>
+                    <Route exact path="/locations" render={(props) => {
+                        return <>
+                            {
+                                isAdmin
+                                    ? <main className="locationsContainer">
+                                        <h1>Available Locations</h1>
+                                        <LocationList {...props} />
+                                    </main>
+                                    : <Redirect to="/" />
+                            }
+                        </>
+                    }} />  
+                
+                
+                </LocationProvider>  
+                <SensortypeProvider>
+                    <Route exact path="/sensortypes" render={(props) => {
+                        return <>
+                            {
+                                isAdmin
+                                    ? <main className="sensortypesContainer">
+                                        <h1>Available Sensortypes</h1>
+                                        <SensortypeList {...props} />
+                                    </main>
+                                    : <Redirect to="/" />
+                            }
+                        </>
+                    }} />  
+                
+                
+                </SensortypeProvider> 
 
-                        
-                </DeviceProvider> 
-                </TagProvider>    
+                <Route exact path='/users' render={() => {
+                        return <>
+                        { 
+                        isAdmin 
+                            ? <main className="usersContainer">                                
+                                <UserTable />
+                            </main>
+                            : <Redirect to="/" />
+                        }
+                        </>
+                    }} />
+               
+                <Route path="/users/:userId(\d+)" render={
+                        props => <UserProfile {...props} />
+                    } 
+                /> 
                 {/* <Route exact path='/users' render={() => {
                 return <>
                     {

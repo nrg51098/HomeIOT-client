@@ -23,14 +23,16 @@ export const DeviceProvider = (props) => {
         return fetch("http://localhost:8000/get_current_user", {
             method: "POST",
             headers: {
+                "Content-Type": "application/json",
                 "Authorization": `Token ${localStorage.getItem("homeiot_user_id")}`
             },
             body: JSON.stringify(body)
         })
             .then(res => res.json())
             .then(res => {
-                fetch(`http://localhost:8000/users/${res.user_id}`, {
+                fetch(`http://localhost:8000/devices?user=${res.appuser_id}`, {
                     headers: {
+                        "Content-Type": "application/json",
                         "Authorization": `Token ${localStorage.getItem("homeiot_user_id")}`
                     }
                 })
@@ -40,8 +42,9 @@ export const DeviceProvider = (props) => {
     }
 
     const getDevicesByUserId = (userId) => {
-        return fetch(`http://localhost:8000/users/${userId}`, {
+        return fetch(`http://localhost:8000/devices?user=${userId}`, {
             headers: {
+                "Content-Type": "application/json",
                 "Authorization": `Token ${localStorage.getItem("homeiot_user_id")}`
             }
         })

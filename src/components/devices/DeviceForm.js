@@ -2,6 +2,9 @@ import React, { useContext, useState, useEffect, Fragment } from "react"
 import { useHistory } from 'react-router-dom'
 import { DeviceContext } from "./DeviceProvider"
 import { TagContext } from "../tags/TagProvider"
+import { LocationContext } from "../locations/LocationProvider"
+import { SensortypeContext } from "../sensortypes/SensortypeProvider"
+
 
 
 export const DeviceForm = (props) => {
@@ -11,6 +14,8 @@ export const DeviceForm = (props) => {
 
     // Tags data
     const { tags, getTags } = useContext(TagContext)
+    const { locations, getLocations } = useContext(LocationContext)
+    const { sensortypes, getSensortypes } = useContext(SensortypeContext)
 
 
     // Component state
@@ -28,8 +33,15 @@ export const DeviceForm = (props) => {
             When changing a state object or array, always create a new one
             and change state instead of modifying current one
         */
-        const newDevice = Object.assign({}, device)          // Create copy
-        newDevice[event.target.name] = event.target.value    // Modify copy
+        const newDevice = Object.assign({}, device)  
+        if( event.target.name == "location_id" || event.target.name == "sensor_type_id") 
+        {
+            newDevice[event.target.name] = parseInt(event.target.value)
+        }  
+        else {
+            newDevice[event.target.name] = event.target.value
+        }     // Create copy
+            // Modify copy
         setDevice(newDevice)                                 // Set copy as new state
     }
 
@@ -49,6 +61,13 @@ export const DeviceForm = (props) => {
         setNewTags(updatedTagArray)
     }
 
+    const handleCheckboxChange = (event) => {
+        
+        const newDevice = Object.assign({}, device)          // Create copy
+        newDevice[event.target.name] = event.target.checked    // Modify copy
+        setDevice(newDevice)                                 // Set copy as new state
+    }
+
     /*
         If there is a URL parameter, then the user has chosen to
         edit an device.
@@ -60,16 +79,19 @@ export const DeviceForm = (props) => {
         if (editMode) {
             const deviceId = parseInt(props.match.params.deviceId)
             const selectedDevice = devices.find(a => a.id === deviceId) || {}
-            selectedDevice.category
-                ? selectedDevice.category_id = selectedDevice.category.id
-                : selectedDevice.category_id = 0
+            selectedDevice.location
+                ? selectedDevice.location_id = selectedDevice.location.id
+                : selectedDevice.location_id = 0
+            selectedDevice.sensor_type
+                ? selectedDevice.sensor_type_id = selectedDevice.sensor_type.id
+                : selectedDevice.sensor_type_id = 0
             setDevice(selectedDevice)
         }
     }
 
     const createNewTags = () => {
         const tempTags = []
-        tags && tags.map(tag => tempTags.push({ id: tag.id, label: tag.label, isChecked: device.tags && device.tags.find(t => t.id === tag.id) ? true : false }))
+        tags && tags.map(tag => tempTags.push({ id: tag.id, label: tag.label, isChecked: device.tag && device.tag.find(t => t.id === tag.id) ? true : false }))
         setNewTags(tempTags)
     }
 
@@ -77,6 +99,8 @@ export const DeviceForm = (props) => {
     useEffect(() => {
         getDevices();
         getTags();
+        getLocations();
+        getSensortypes();
         
     }, [])
 
@@ -97,23 +121,29 @@ export const DeviceForm = (props) => {
             // PUT
             updateDevice({
                 id: device.id,
-                title: device.title,
-                content: device.content,
-                category_id: parseInt(device.category_id),
-                publication_date: device.publication_date,
-                author_id: device.rareuser.id,
-                image_url: device.image_url,
-                tags: deviceTagsArray
+                name: device.name,
+                location_id: parseInt(device.location_id),
+                sensor_type_id: parseInt(device.sensor_type_id),
+                hardware_number: device.hardware_number, // category_id: parseInt(device.category_id),
+                created_datetime: device.created_datetime,
+                appuser_id: device.appuser.id,
+                device_img_url: device.device_img_url,
+                is_active: device.is_active,
+                is_public: device.is_public,
+                tag: deviceTagsArray
             })
                 .then(() => props.history.push(`/devices/${device.id}`))
         } else {
             // POST
             addDevice({
-                title: device.title,
-                content: device.content,
-                category_id: device.category_id,
-                image_url: device.image_url,
-                tags: deviceTagsArray
+                name: device.name,
+                location_id: parseInt(device.location_id),
+                sensor_type_id: parseInt(device.sensor_type_id),
+                hardware_number: device.hardware_number,
+                device_img_url: device.device_img_url,
+                is_active:device.is_active,
+                is_public:device.is_public,
+                tag: deviceTagsArray
             })
                 .then((newlyCreatedDevice) => props.history.push(`/devices/${newlyCreatedDevice.id}`))
         }
@@ -123,36 +153,77 @@ export const DeviceForm = (props) => {
     return (
         <div className="container w-50">
             <form className="deviceForm">
-                <h2 className="deviceForm__title">{editMode ? "Update Device" : "New Device"}</h2>
+                <h2 className="deviceForm__name">{editMode ? "Update Device" : "New Device"}</h2>
                 <fieldset>
                     <div className="form-group">
-                        <input type="text" name="title" required autoFocus className="form-control w-75"
-                            placeholder="Device title"
-                            defaultValue={device.title}
+                        <input type="text" name="name" required autoFocus className="form-control" 
+                            placeholder="Device name"
+                            defaultValue={device.name}
                             onChange={handleControlledInputChange}
                         />
                     </div>
                 </fieldset>
                 <fieldset>
                     <div className="form-group">
-                        <input type="text" name="image_url" className="form-control w-75"
+                        <input type="text" name="device_img_url" className="form-control"
                             placeholder="Image URL"
-                            defaultValue={device.image_url}
+                            defaultValue={device.device_img_url}
                             onChange={handleControlledInputChange}>
                         </input>
                     </div>
                 </fieldset>
                 <fieldset>
                     <div className="form-group">
-                        <textarea rows="7" type="text" name="content" required className="form-control"
-                            placeholder="Article content"
-                            value={device.content}
+                        <select name="location_id" className="form-control w-50" value={device.location_id || ((device.location && device.location.id) || "0")} onChange={handleControlledInputChange}>
+                            <option value="0" disabled>Location Select</option>
+                            {locations.map(location => (
+                                <option key={location.id} value={location.id}>{location.label}</option>
+                            ))}
+                        </select>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <div className="form-group">
+                        <select name="sensor_type_id" className="form-control w-50" value={device.sensor_type_id || ((device.sensor_type && device.sensor_type.id) || "0")} onChange={handleControlledInputChange}>
+                            <option value="0" disabled>SensorType Select</option>
+                            {sensortypes.map(sensor_type => (
+                                <option key={sensor_type.id} value={sensor_type.id}>{sensor_type.label}</option>
+                            ))}
+                        </select>
+                    </div>
+                </fieldset>                
+                <fieldset>
+                    <div className="form-group">
+                        <input type="text" name="hardware_number" className="form-control" required 
+                            placeholder="Hardware Number"
+                            defaultValue={device.hardware_number}
                             onChange={handleControlledInputChange}>
-                        </textarea>
+                        </input>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <div className="d-flex flex-row flex-wrap form-check form-check-inline mb-3">
+                        
+                        <input type="checkbox" name="is_active" className="form-check-input" checked={device.is_active} value={device.is_active} required                         
+                            placeholder="Is Active"                            
+                            onChange={handleCheckboxChange}>
+                        </input>
+                        <label htmlFor="is_active" className="form-check-label"> Is Active</label>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <div className="d-flex flex-row flex-wrap form-check form-check-inline mb-3">
+                        
+                        <input type="checkbox" name="is_public" className="form-check-input" checked={device.is_public} value={device.is_public} required
+                            placeholder="Is Public"
+                            onChange={handleCheckboxChange}>
+                        </input>
+                        <label htmlFor="is_public" className="form-check-label">Is Public</label>
                     </div>
                 </fieldset>
                 
                 <fieldset>
+                    <h6 className="mt-3">Select Tags:</h6>
                     <div className="d-flex flex-row flex-wrap form-check form-check-inline mb-3">
                         {
                             newTags.map(tag => (
@@ -171,7 +242,7 @@ export const DeviceForm = (props) => {
                         constructNewDevice()
                     }}
                     className="btn btn-primary">
-                    {editMode ? "Save" : "Publish"}
+                    {editMode ? "Save" : "Create"}
                 </button>
                 <button type="button" onClick={() => history.goBack()}
                     className="btn btn-secondary ml-5">Cancel</button>

@@ -11,66 +11,14 @@ export const DeviceDetails = (props) => {
     const deleteDeviceModal = useRef();
 
     const [device, setDevice] = useState({})
-
-    const [reactionCounts, setReactionCounts] = useState([])
-    const [showReactionSelector, setShowReactionSelector] = useState(false)
-    const [currentUserDeviceReactions, setCurrentUserDeviceReactions] = useState([])
+    
 
     useEffect(() => {
         const deviceId = parseInt(props.match.params.deviceId)
         getDeviceById(deviceId)
             .then(setDevice)
     }, [])
-
-    
-
-    const getReactionCounts = (reactionsArray) => {
-        var reactionCountsArray = [];
-        var reactionCounts = {}
-
-        // Initialize the reactionCounts array with the reaction and its respective count
-        reactionsArray.forEach(reaction => {
-            reactionCounts[reaction.reaction.id] = { ...reaction.reaction, "count": 0 }
-        })
-
-        // Loop over each reaction on the device and count the unique reactions
-        reactionsArray.forEach(reaction => {
-            reactionCounts[reaction.reaction.id].count += 1
-            // reactionCounts[reaction.reaction.id].users.push(reaction.user.id)
-        })
-
-        Object.keys(reactionCounts).forEach(reaction => {
-            reactionCountsArray.push(reactionCounts[reaction])
-        })
-
-        // Set the counts of the unique reactions
-        setReactionCounts(reactionCountsArray)
-    }
-
-    useEffect(() => {
-        device.reactions && getReactionCounts(device.reactions)
-    }, [device])
-
-    useEffect(() => {
-        const body = { "token": `${localStorage.getItem("rare_user_id")}` }
-        fetch("http://localhost:8000/get_current_user", {
-            method: "POST",
-            headers: {
-                "Authorization": `Token ${localStorage.getItem("rare_user_id")}`
-            },
-            body: JSON.stringify(body)
-        })
-            .then(res => res.json())
-            .then(res => {
-                const userReactions = [];
-                device.reactions && device.reactions.forEach(deviceReaction => {
-                    if (deviceReaction.user.id === res.user_id) {
-                        userReactions.push(deviceReaction.reaction.id)
-                    }
-                })
-                setCurrentUserDeviceReactions(userReactions);
-            })
-    }, [reactionCounts])
+        
 
     return (
         <section className="device d-flex flex-row">
@@ -102,16 +50,13 @@ export const DeviceDetails = (props) => {
                 </div>
                 <div className="d-flex flex-row justify-content-between align-items-center">
                     <div>
-                        <small >Published on {device.publication_date} </small>
-                        <small className="d-block"> By {device.rareuser && device.rareuser.user.first_name} {device.rareuser && device.rareuser.user.last_name}</small>
-                    </div>
-                    <div>
-                        <button className="btn btn-outline-primary mt-0" onClick={() => history.push(`/device/${device.id}/comments`)}>View Comments</button>
-                    </div>
+                        <small >Created on {device.created_datetime} </small>
+                        <small className="d-block"> By {device.appuser && device.appuser.user.first_name} {device.appuser && device.appuser.user.last_name}</small>
+                    </div>              
                     
                 </div>
                 <div className="device__content">
-                    {device.content}
+                    {device.location_id}
                 </div>
             </div>
             <div className="mr-auto">

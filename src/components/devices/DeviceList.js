@@ -24,10 +24,7 @@ export const DeviceList = (props) => {
 
     // Initialization effect hook -> Go get device data
     useEffect(() => {
-        if (props.location && props.location.pathname.includes('/user/devices') && props.match.params.userId) {
-            // get devices by user id
-            getDevicesByUserId(parseInt(props.match.params.userId))
-        } else if (props.location && props.location.pathname === '/user/devices') {
+        if (props.location && props.location.pathname === '/user/devices') {
             getDevicesByCurrentUserId()
         } else {
             // get all devices
@@ -35,18 +32,18 @@ export const DeviceList = (props) => {
         }
     }, [])
 
-    // useEffect(() => {
-    //     devices.sort((a, b) => (a.publication_date > b.publication_date) ? -1 : 1)
-    //     const matchingDevices = devices.filter(device => device.title.toLowerCase().includes(searchTerms.toLowerCase()))
-    //     const validDevices = matchingDevices.filter((device) => (Date.parse(device.publication_date) < Date.now()) && (device.approved === true))
-    //     setFiltered(validDevices)
-    // }, [searchTerms])
+    useEffect(() => {
+        devices.sort((a, b) => (a.created_datetime > b.created_datetime) ? -1 : 1)
+        const matchingDevices = devices.filter(device => device.name.toLowerCase().includes(searchTerms.toLowerCase()))
+        const validDevices = matchingDevices.filter((device) => (Date.parse(device.created_datetime) < Date.now()) )
+        setFiltered(validDevices)
+    }, [searchTerms])
 
-    // useEffect(() => {
-    //     devices.sort((a, b) => (a.publication_date > b.publication_date) ? -1 : 1)
-    //     const validDevices = devices.filter((device) => (Date.parse(device.publication_date) < Date.now()) && (device.approved === true))
-    //     setFiltered(validDevices)
-    // }, [devices])
+    useEffect(() => {
+        devices.sort((a, b) => (a.created_datetime > b.created_datetime) ? -1 : 1)
+        const validDevices = devices.filter((device) => (Date.parse(device.created_datetime) < Date.now()) )
+        setFiltered(validDevices)
+    }, [devices])
 
     useEffect(() => {
         const userId = props.match && parseInt(props.match.params.userId)
