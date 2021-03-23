@@ -31,11 +31,11 @@ export const NavBar = () => {
                         <Link to="/user/devices" className="btn btn-outline-primary w-100">My Devices</Link>
                     </div>
                 </li>
-                <li className="navbar__item mx-3">
+                {/* <li className="navbar__item mx-3">
                     <div className="d-flex justify-content-center">
                         <Link to="/subscriptions" className="btn btn-outline-primary w-100">My Subscriptions</Link>
                     </div>
-                </li>
+                </li> */}
                 {isAdmin ? (
                     <li className="navbar__item mx-3">
                         <div className="d-flex justify-content-center">

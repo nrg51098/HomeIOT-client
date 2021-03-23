@@ -63,14 +63,14 @@ export const SubscriptionProvider = (props) => {
     })
         .then(res => res.json())
         .then(res => {
-            fetch(`http://localhost:8000/subscriptions?user=${res.appuser_id}`, {
+            fetch(`http://localhost:8000/subscriptions?user=${res.user_id}`, {
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Token ${localStorage.getItem("homeiot_user_id")}`
                 }
             })
                 .then(res => res.json())
-                .then(res => setSubscriptions(res.subscriptions))
+                .then(res => setSubscriptions(res))
         })
 }
 

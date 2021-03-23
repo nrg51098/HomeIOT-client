@@ -22,6 +22,7 @@ import { UserpreferenceEditForm } from "./userpreferences/UserpreferenceEditForm
 import { UserpreferenceProvider } from "./userpreferences/UserpreferenceProvider.js"
 import { SubscriptionTable } from "./subscriptions/SubscriptionTable.js"
 import { SubscriptionProvider } from "./subscriptions/SubscriptionProvider.js"
+import { TempDatasetsProvider } from "./tempdatasets/TempDatasetsProvider.js"
 
 
 export const ApplicationViews = () => {
@@ -51,36 +52,40 @@ export const ApplicationViews = () => {
                             <LocationProvider>
                                 <SensortypeProvider>
                                     <DeviceProvider>
-                                            <Route exact path="/">
-                                                <DeviceList />
-                                            </Route>
-                                            <Route exact path="/user/devices" render={(props) => <DeviceList {...props} />} />                                            
-                                            <Route path="/user/devices/:userId(\d+)" render={props => <DeviceList {...props} />} />
-                                            <Route exact path="/devices" render={(props) => {
-                                                return <>
-                                                    <main className="deviceContainer">
-                                                        <h1>Devices</h1>
+                                        <SubscriptionProvider>
+                                            <TempDatasetsProvider>
+                                                            <Route exact path="/">
+                                                                <DeviceList />
+                                                            </Route>
+                                                            <Route exact path="/user/devices" render={(props) => <DeviceList {...props} />} />                                            
+                                                            <Route path="/user/devices/:userId(\d+)" render={props => <DeviceList {...props} />} />
+                                                            <Route exact path="/devices" render={(props) => {
+                                                                return <>
+                                                                    <main className="deviceContainer">
+                                                                        <h1>Devices</h1>
 
-                                                        <DeviceSearch />
-                                                        <DeviceTable />
-                                                    </main>
+                                                                        <DeviceSearch />
+                                                                        <DeviceTable />
+                                                                    </main>
 
-                                                </>
-                                            }} />
+                                                                </>
+                                                            }} />
 
-                                            <Route exact path="/devices/create" render={(props) => {
-                                                return <DeviceForm {...props} />
-                                            }} />
+                                                            <Route exact path="/devices/create" render={(props) => {
+                                                                return <DeviceForm {...props} />
+                                                            }} />
 
-                                            <Route path="/devices/:deviceId(\d+)" render={
-                                                    props => <DeviceDetails {...props} />
-                                                } />
-                                                
-                                            <Route path="/devices/edit/:deviceId(\d+)" render={
-                                                    props => <DeviceForm {...props} />
-                                                } />
+                                                            
 
-                                            
+                                                            <Route path="/devices/:deviceId(\d+)" render={
+                                                                    props => <DeviceDetails {...props} />
+                                                                } />
+                                                                
+                                                            <Route path="/devices/edit/:deviceId(\d+)" render={
+                                                                    props => <DeviceForm {...props} />
+                                                                } />
+                                            </TempDatasetsProvider>
+                                        </SubscriptionProvider>    
                                     </DeviceProvider> 
                                 </SensortypeProvider>
                             </LocationProvider>                        

@@ -47,8 +47,10 @@ export const DeviceList = (props) => {
 
     useEffect(() => {
         const userId = props.match && parseInt(props.match.params.userId)
-        getUserById(userId ? userId : localStorage.getItem("homeiot_user_id"))
-            .then(setUserProfile)
+        if(userId){
+            getUserById(userId)
+                .then(setUserProfile)
+            }
     }, [])
 
 
