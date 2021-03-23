@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom'
 import { DeviceContext } from "./DeviceProvider"
 import { SubscriptionContext } from "../subscriptions/SubscriptionProvider"
 import { TempDatasetsContext } from "../tempdatasets/TempDatasetsProvider"
+import App from "./SampleChart"
 
 import "./Devices.css"
 
@@ -14,6 +15,7 @@ export const DeviceDetails = (props) => {
     const history = useHistory();
     const deleteDeviceModal = useRef();
 
+    const [myTempDatasets, setMyTempDatasets] = useState([])
     const [device, setDevice] = useState({})
     const [currentSub, setCurrentSub] = useState(-1)
     const [isDeviceSubscribed, setIsDeviceSubscribed] = useState(false)
@@ -25,8 +27,11 @@ export const DeviceDetails = (props) => {
             .then(setDevice)
 
         getSubscriptionsByCurrentUserId()
+        getTempDatasetsByDeviceId(deviceId)
 
     }, [])
+
+
 
     useEffect(() =>{
         const deviceId = parseInt(props.match.params.deviceId)
@@ -43,6 +48,14 @@ export const DeviceDetails = (props) => {
         }       
         
     }, [subscriptions])
+
+
+    useEffect(()=>{
+        if(tempDatasets){
+            setMyTempDatasets(tempDatasets)
+        }
+
+    }, [tempDatasets, myTempDatasets])
     
     const handleCheckboxChange = (event) => {
         if(event.target.checked){
@@ -81,7 +94,21 @@ export const DeviceDetails = (props) => {
             <div className="device_details d-flex flex-column container mr-0">
                 <h3 className="device__title text-center">Device Name: {device.name}</h3>
 
-                <div className="d-flex flex-row justify-content-between">
+                
+                {myTempDatasets ?
+                <div className="d-flex flex-row justify-content-center">
+
+                    <App {...props} myTempDatasets={myTempDatasets}/>
+                    </div>
+                :
+                <div className="text-center">
+                <img className="mb-5 img-fluid w-100" src="https://via.placeholder.com/400x100" />
+                </div>                
+            }
+                
+
+                
+                <div className="d-flex flex-row justify-content-center">
                     <div className="device__manage__buttons">
                         <i className="fas fa-trash-alt device__hover__delete" onClick={() => {
                             deleteDeviceModal.current.showModal()
@@ -91,11 +118,7 @@ export const DeviceDetails = (props) => {
                     
                 </div>
 
-                
 
-                <div className="text-center">
-                    <img className="mb-5 img-fluid w-100" src="https://via.placeholder.com/400x100" />
-                </div>
 
                 <fieldset>
                     <div className="d-flex justify-content-center">
@@ -106,6 +129,8 @@ export const DeviceDetails = (props) => {
                         </div> 
                     </div> 
                 </fieldset>
+
+                
 
                 
 

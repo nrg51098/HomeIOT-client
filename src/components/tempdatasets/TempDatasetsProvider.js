@@ -7,7 +7,7 @@ export const TempDatasetsProvider = (props) => {
   
 
   const getTempDatasetsByDeviceId = (deviceId) => {
-    return fetch(`http://localhost:8000/tempDatasets?device_id=${deviceId}`, {
+    return fetch(`http://localhost:8000/tempdatasets?device_id=${deviceId}`, {
       headers: {
           "Authorization": `Token ${localStorage.getItem("homeiot_user_id")}`
       }
@@ -18,7 +18,7 @@ export const TempDatasetsProvider = (props) => {
 
   const createTempDataset = tempDataset => {
     //   to add the dataset the user has to be creator of the device and should pass the token in the headers
-    return fetch("http://localhost:8000/tempDatasets", {
+    return fetch("http://localhost:8000/tempdatasets", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
