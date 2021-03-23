@@ -1,24 +1,69 @@
 import React, { useContext, useEffect, useState, useRef } from "react"
 import { useHistory } from 'react-router-dom'
 import { DeviceContext } from "./DeviceProvider"
+import { SubscriptionContext } from "../subscriptions/SubscriptionProvider"
+import { TempDatasetsContext } from "../tempdatasets/TempDatasetsProvider"
 
 import "./Devices.css"
 
 export const DeviceDetails = (props) => {
     const { getDeviceById, releaseDevice } = useContext(DeviceContext)
+    const { getSubscriptionsByCurrentUserId, subscriptions, deleteSubscription, createSubscription } = useContext(SubscriptionContext)
+    const { tempDatasets, getTempDatasetsByDeviceId, createTempDataset } = useContext(TempDatasetsContext)
     
     const history = useHistory();
     const deleteDeviceModal = useRef();
 
     const [device, setDevice] = useState({})
+    const [currentSub, setCurrentSub] = useState(-1)
+    const [isDeviceSubscribed, setIsDeviceSubscribed] = useState(false)
     
 
     useEffect(() => {
         const deviceId = parseInt(props.match.params.deviceId)
         getDeviceById(deviceId)
             .then(setDevice)
+
+        getSubscriptionsByCurrentUserId()
+
     }, [])
+
+    useEffect(() =>{
+        const deviceId = parseInt(props.match.params.deviceId)
         
+        if (subscriptions) {
+            const tempSub = subscriptions.filter(sub => sub.device.id === deviceId)
+            console.log(tempSub)
+            if(tempSub && tempSub.length > 0){
+                setIsDeviceSubscribed(true)                
+                setCurrentSub(tempSub[0].id)                
+            }
+        } else{
+            setIsDeviceSubscribed(false)
+        }       
+        
+    }, [subscriptions])
+    
+    const handleCheckboxChange = (event) => {
+        if(event.target.checked){
+            if(isDeviceSubscribed === false){
+                const newSubscriptionObject = {
+                    "device_id": device.id,
+                    "device_notification": true
+                }
+                createSubscription(newSubscriptionObject)
+                console.log(newSubscriptionObject)
+            }  
+            setIsDeviceSubscribed(true)        
+        }
+        else {
+            if(subscriptions && isDeviceSubscribed === true){
+                deleteSubscription(currentSub)
+                console.log(currentSub)
+            }
+            setIsDeviceSubscribed(false)
+        }                                       
+    }
 
     return (
         <section className="device d-flex flex-row">
@@ -32,8 +77,10 @@ export const DeviceDetails = (props) => {
                     <button className="btn btn-outline-primary" onClick={e => deleteDeviceModal.current.close()}>Cancel</button>
                 </div>
             </dialog>
+
             <div className="device_details d-flex flex-column container mr-0">
-                <h3 className="device__title text-center">{device.title}</h3>
+                <h3 className="device__title text-center">Device Name: {device.name}</h3>
+
                 <div className="d-flex flex-row justify-content-between">
                     <div className="device__manage__buttons">
                         <i className="fas fa-trash-alt device__hover__delete" onClick={() => {
@@ -41,29 +88,54 @@ export const DeviceDetails = (props) => {
                         }}></i>
                         <i className="fas fa-cog device__hover" onClick={() => history.push(`/devices/edit/${device.id}`)}></i>
                     </div>
-                    <div>
-                        <small>{device.category && device.category.label}</small>
-                    </div>
+                    
                 </div>
+
+                
+
                 <div className="text-center">
                     <img className="mb-5 img-fluid w-100" src="https://via.placeholder.com/400x100" />
                 </div>
-                <div className="d-flex flex-row justify-content-between align-items-center">
-                    <div>
-                        <small >Created on {device.created_datetime} </small>
-                        <small className="d-block"> By {device.appuser && device.appuser.user.first_name} {device.appuser && device.appuser.user.last_name}</small>
-                    </div>              
+
+                <fieldset>
+                    <div className="d-flex justify-content-center">
+                        <div className="form-check form-check-inline mb-3">
+                                <input type="checkbox" className="form-check-input" name="isDeviceSubscribed" checked={isDeviceSubscribed} value={isDeviceSubscribed} onChange={handleCheckboxChange}></input>
+                                <label htmlFor="isDeviceSubscribed" className="form-check-label">Device Subscription</label>                      
+                                
+                        </div> 
+                    </div> 
+                </fieldset>
+
+                
+
+                <div className="d-flex justify-content-center text-center">
+                        <div >Location: {device.location && device.location.label}</div>
+                </div>
+
+                <div className="d-flex justify-content-center">               
+                       
+                By {device.appuser && device.appuser.user.first_name} {device.appuser && device.appuser.user.last_name}                                
                     
-                </div>
-                <div className="device__content">
-                    {device.location_id}
-                </div>
+                </div> 
+                
+                <div className="d-flex justify-content-center text-center">Created on {device.created_datetime}</div> 
+
+                
+
+                <div className="d-flex justify-content-center text-center">Tags:</div>  
+                <div className="d-flex justify-content-center text-center">           
+                    {device.tag && device.tag.map(tg => (
+                        <div key={tg.id} className="border border-primary rounded px-5 m-3">{tg.label}</div>
+                    ))} 
+                </div> 
+
+                
+                
+                 
+                
             </div>
-            <div className="mr-auto">
-                {device.tags && device.tags.map(tag => (
-                    <div key={tag.id} className="d-flex align-items-center border border-primary rounded px-5 mb-3">{tag.label}</div>
-                ))}
-            </div>
+
         </section>
     )
 }

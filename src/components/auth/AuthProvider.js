@@ -23,11 +23,11 @@ export const AuthProvider = (props) => {
     }
 
     const getCurrentUser = () => {
-        const body = { "token": `${localStorage.getItem("rare_user_id")}` }
+        const body = { "token": `${localStorage.getItem("homeiot_user_id")}` }
         return fetch("http://localhost:8000/get_current_user", {
             method: "POST",
             headers: {
-                "Authorization": `Token ${localStorage.getItem("rare_user_id")}`
+                "Authorization": `Token ${localStorage.getItem("homeiot_user_id")}`
             },
             body: JSON.stringify(body)
         })
