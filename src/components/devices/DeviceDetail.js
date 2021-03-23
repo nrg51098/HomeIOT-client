@@ -38,7 +38,7 @@ export const DeviceDetails = (props) => {
         
         if (subscriptions) {
             const tempSub = subscriptions.filter(sub => sub.device.id === deviceId)
-            console.log(tempSub)
+            
             if(tempSub && tempSub.length > 0){
                 setIsDeviceSubscribed(true)                
                 setCurrentSub(tempSub[0].id)                
@@ -54,6 +54,7 @@ export const DeviceDetails = (props) => {
         if(tempDatasets){
             setMyTempDatasets(tempDatasets)
         }
+        console.log(myTempDatasets)
 
     }, [tempDatasets, myTempDatasets])
     
@@ -97,14 +98,13 @@ export const DeviceDetails = (props) => {
                 
                 {myTempDatasets ?
                 <div className="d-flex flex-row justify-content-center">
-
                     <App {...props} myTempDatasets={myTempDatasets}/>
                     </div>
                 :
                 <div className="text-center">
                 <img className="mb-5 img-fluid w-100" src="https://via.placeholder.com/400x100" />
                 </div>                
-            }
+                }
                 
 
                 
