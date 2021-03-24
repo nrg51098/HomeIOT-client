@@ -23,34 +23,31 @@ export const UserpreferenceDetail = (props) => {
                 
         <section className="userpreference d-flex flex-row">
             
-            <div className="userpreference_details d-flex flex-column container mr-0">                
+            <div className="userpreference_details d-flex flex-column container mr-0"> 
                 <div className="d-flex flex-row justify-content-between">
                     <div className="userpreference__manage__buttons">
                         <i className="fas fa-cog userpreference__hover" onClick={() => history.push(`/userpreferences/user/${currentUserpreference[0].id}`)}></i>
                     </div>
-                    <div>
-                        <small>{userpreference.unit }</small>
-                   </div>
-                </div>
+                    
+                </div>               
+                
                 <div className="text-center">
-                    <img className="mb-5 img-fluid w-100" src="https://via.placeholder.com/400x100" />
+                    <img className="mb-5 img-fluid" src="https://images.unsplash.com/photo-1614846027182-cecfee3a427b?ixid=MXwxMjA3fDB8MHxzZWFyY2h8NDl8fHNlbnNvcnxlbnwwfHwwfA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" />
                 </div>
                 <div className="d-flex flex-row justify-content-between align-items-center">
                     <div>
-                        <small >Created on {userpreference.fail_notification} </small>
-                        <small className="d-block"> By {userpreference.appuser && userpreference.appuser.user.first_name} {userpreference.appuser && userpreference.appuser.user.last_name}</small>
+                        <small>{currentUserpreference[0].unit }</small>
+                   </div>
+                    <div>
+                       
+                        <small className="d-block"> User Preference for {currentUserpreference[0].appuser && currentUserpreference[0].appuser.user.first_name} {currentUserpreference[0].appuser && currentUserpreference[0].appuser.user.last_name}</small>
                     </div>              
                     
                 </div>
-                <div className="userpreference__content">
-                    {userpreference.location_id}
-                </div>
+                
+                
             </div>
-            <div className="mr-auto">
-                {userpreference.userpreferences && userpreference.userpreferences.map(userpreference => (
-                    <div key={userpreference.id} className="d-flex align-items-center border border-primary rounded px-5 mb-3">{userpreference.label}</div>
-                ))}
-            </div>
+            
         </section>
     )
 }

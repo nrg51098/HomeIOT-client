@@ -42,7 +42,7 @@ class App extends Component {
                 else if(sensor_type_id === 2){
                   const timestamps = myDatasets.map((dataset) => dataset.timestamp)
                   const temps = myDatasets.map((dataset) => parseInt(dataset.temp))
-                  const humis = myDatasets.map((dataset) => parseInt(dataset.temp))
+                  const humis = myDatasets.map((dataset) => parseInt(dataset.humi))
 
                   this.state = {
                     options: {
