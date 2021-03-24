@@ -11,34 +11,71 @@ class App extends Component {
 
   updateSeries = () =>
   {
-    const myTempDatasets= this.props.myTempDatasets
-    const timestamps = myTempDatasets.map((dataset) => dataset.timestamp)
-    const temps = myTempDatasets.map((dataset) => parseInt(dataset.temp))
+    const myDatasets= this.props.myDatasets
+    const sensor_type_id = this.props.sensor_type_id
+    // const timestamps = myDatasets.map((dataset) => dataset.timestamp)
+    // const temps = myDatasets.map((dataset) => parseInt(dataset.temp))
+    
+    console.log(sensor_type_id)
+    if(sensor_type_id){
+                if(sensor_type_id === 1){
+                  const timestamps = myDatasets.map((dataset) => dataset.timestamp)
+                  const temps = myDatasets.map((dataset) => parseInt(dataset.temp))
 
-    console.log(temps)
+                  this.state = {
+                    options: {
+                      chart: {
+                        id: "basic-bar"
+                      },
+                      xaxis: {
+                        categories: timestamps
+                      }
+                    },
+                    series: [
+                      {
+                        name: "series-1",
+                        data: temps
+                      }
+                    ]
+                  };
+                }
+                else if(sensor_type_id === 2){
+                  const timestamps = myDatasets.map((dataset) => dataset.timestamp)
+                  const temps = myDatasets.map((dataset) => parseInt(dataset.temp))
+                  const humis = myDatasets.map((dataset) => parseInt(dataset.temp))
 
-    this.state = {
-      options: {
-        chart: {
-          id: "basic-bar"
-        },
-        xaxis: {
-          categories: timestamps
-        }
-      },
-      series: [
-        {
-          name: "series-1",
-          data: temps
-        }
-      ]
-    };
+                  this.state = {
+                    options: {
+                      chart: {
+                        id: "basic-bar"
+                      },
+                      xaxis: {
+                        categories: timestamps
+                      }
+                    },
+                    series: [
+                      {
+                        name: "series-temps",
+                        data: temps
+                      },
+                      {
+                        name: "series-humis",
+                        data: humis
+                      }
+                    ]
+                  };
+                }
+    
+    
+    }
+
+    
 
   }
 
   // componentDidUpdate(prevProps) {
   //   // Typical usage (don't forget to compare props):
-  //   if (this.props.myTempDatasets !== prevProps.myTempDatasets) {
+  //   if (this.props.myDatasets !== prevProps.myDatasets) {
      
   //   }
     

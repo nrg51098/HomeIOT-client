@@ -17,7 +17,7 @@ export const DeviceDetails = (props) => {
     const history = useHistory();
     const deleteDeviceModal = useRef();
 
-    const [myTempDatasets, setMyTempDatasets] = useState([])
+    const [myDatasets, setMyDatasets] = useState([])
     const [device, setDevice] = useState({})
     const [currentSub, setCurrentSub] = useState(-1)
     const [isDeviceSubscribed, setIsDeviceSubscribed] = useState(false)
@@ -29,9 +29,6 @@ export const DeviceDetails = (props) => {
             .then(setDevice)
 
         getSubscriptionsByCurrentUserId()
-        
-        
-
     }, [])
 
     useEffect(() =>{
@@ -71,11 +68,15 @@ export const DeviceDetails = (props) => {
 
     useEffect(()=>{
         if(tempDatasets){
-            setMyTempDatasets(tempDatasets)
+            setMyDatasets(tempDatasets)
         }
-        console.log(myTempDatasets)
+    }, [tempDatasets])
 
-    }, [tempDatasets, myTempDatasets])
+    useEffect(()=>{
+        if(tempHumiDatasets){
+            setMyDatasets(tempHumiDatasets)
+        }
+    }, [tempHumiDatasets])    
     
     const handleCheckboxChange = (event) => {
         if(event.target.checked){
@@ -98,6 +99,8 @@ export const DeviceDetails = (props) => {
         }                                       
     }
 
+
+
     return (
         <section className="device d-flex flex-row">
             <dialog className="dialog dialog--deleteDevice" ref={deleteDeviceModal}>
@@ -115,9 +118,9 @@ export const DeviceDetails = (props) => {
                 <h3 className="device__title text-center">Device Name: {device.name}</h3>
 
                 
-                {myTempDatasets.length > 0 ?
+                {myDatasets.length > 0 ?
                 <div className="d-flex flex-row justify-content-center">
-                    <App {...props} myTempDatasets={myTempDatasets}/>
+                    <App {...props} myDatasets={myDatasets} sensor_type_id={device.sensor_type.id}/>
                     </div>
                 :
                 <div className="text-center">
