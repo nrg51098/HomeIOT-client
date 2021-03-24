@@ -98,7 +98,7 @@ class App extends Component {
               series={this.state.series}
               type="line"
               width="1000"
-              height="300"
+              height="500"
             />
           </div>
         </div>

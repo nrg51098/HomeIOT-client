@@ -31,7 +31,9 @@ export const ApplicationViews = () => {
     const { isAdmin } = useContext(AuthContext);
 
     return <>
+    <div className="d-flex flex-wrap w-100">
         <NavBar />
+        </div>
         <main style={{
             margin: "1rem 2rem",
             lineHeight: "1.75rem"

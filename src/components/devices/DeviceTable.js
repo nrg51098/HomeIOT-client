@@ -91,7 +91,7 @@ export const DeviceTable = () => {
                 </button>
             </div>
             <div className="devices device__table mt-5 mx-3 px-3">
-                <table className="table table-bordered table-striped">
+                <table className="table table-bordered table-hover table-dark table-striped">
                     <thead>
                         <tr>
                             <th scope="col"></th>
