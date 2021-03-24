@@ -23,6 +23,8 @@ import { UserpreferenceProvider } from "./userpreferences/UserpreferenceProvider
 import { SubscriptionTable } from "./subscriptions/SubscriptionTable.js"
 import { SubscriptionProvider } from "./subscriptions/SubscriptionProvider.js"
 import { TempDatasetsProvider } from "./tempdatasets/TempDatasetsProvider.js"
+import { TempHumiDatasetsProvider } from "./temphumidatasets/TempHumiDatasetsProvider.js"
+import { ButtonDatasetsProvider } from "./buttondatasets/ButtonDatasetsProvider.js"
 
 
 export const ApplicationViews = () => {
@@ -54,6 +56,8 @@ export const ApplicationViews = () => {
                                     <DeviceProvider>
                                         <SubscriptionProvider>
                                             <TempDatasetsProvider>
+                                                <TempHumiDatasetsProvider>
+                                                    <ButtonDatasetsProvider>
                                                             <Route exact path="/">
                                                                 <DeviceList />
                                                             </Route>
@@ -84,6 +88,8 @@ export const ApplicationViews = () => {
                                                             <Route path="/devices/edit/:deviceId(\d+)" render={
                                                                     props => <DeviceForm {...props} />
                                                                 } />
+                                                    </ButtonDatasetsProvider> 
+                                                </TempHumiDatasetsProvider>           
                                             </TempDatasetsProvider>
                                         </SubscriptionProvider>    
                                     </DeviceProvider> 

@@ -15,6 +15,8 @@ class App extends Component {
     const timestamps = myTempDatasets.map((dataset) => dataset.timestamp)
     const temps = myTempDatasets.map((dataset) => parseInt(dataset.temp))
 
+    console.log(temps)
+
     this.state = {
       options: {
         chart: {
@@ -34,11 +36,20 @@ class App extends Component {
 
   }
 
-  componentWillReceiveProps(){
-    this.updateSeries()    
-  }
+  // componentDidUpdate(prevProps) {
+  //   // Typical usage (don't forget to compare props):
+  //   if (this.props.myTempDatasets !== prevProps.myTempDatasets) {
+     
+  //   }
+    
+
+  //   this.updateSeries()
+  // }
 
   
+  componentWillReceiveProps(){
+    this.updateSeries()
+  }  
 
   render() {
     return (

@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom'
 import { DeviceContext } from "./DeviceProvider"
 import { SubscriptionContext } from "../subscriptions/SubscriptionProvider"
 import { TempDatasetsContext } from "../tempdatasets/TempDatasetsProvider"
+import { TempHumiDatasetsContext } from "../temphumidatasets/TempHumiDatasetsProvider"
 import App from "./SampleChart"
 
 import "./Devices.css"
@@ -10,7 +11,8 @@ import "./Devices.css"
 export const DeviceDetails = (props) => {
     const { getDeviceById, releaseDevice } = useContext(DeviceContext)
     const { getSubscriptionsByCurrentUserId, subscriptions, deleteSubscription, createSubscription } = useContext(SubscriptionContext)
-    const { tempDatasets, getTempDatasetsByDeviceId, createTempDataset } = useContext(TempDatasetsContext)
+    const { tempDatasets, getTempDatasetsByDeviceId } = useContext(TempDatasetsContext)
+    const { tempHumiDatasets, getTempHumiDatasetsByDeviceId } = useContext(TempHumiDatasetsContext)
     
     const history = useHistory();
     const deleteDeviceModal = useRef();
@@ -27,9 +29,26 @@ export const DeviceDetails = (props) => {
             .then(setDevice)
 
         getSubscriptionsByCurrentUserId()
-        getTempDatasetsByDeviceId(deviceId)
+        
+        
 
     }, [])
+
+    useEffect(() =>{
+        
+        const deviceId = parseInt(props.match.params.deviceId)
+        console.log(device)
+        if(device.sensor_type){
+            console.log(device.sensor_type.id)
+            if(device.sensor_type.id === 1){                          
+                getTempDatasetsByDeviceId(deviceId)               
+            }
+            else if(device.sensor_type.id === 2){                          
+                getTempHumiDatasetsByDeviceId(deviceId)               
+            }              
+        }
+        
+    }, [device])
 
 
 
@@ -96,7 +115,7 @@ export const DeviceDetails = (props) => {
                 <h3 className="device__title text-center">Device Name: {device.name}</h3>
 
                 
-                {myTempDatasets ?
+                {myTempDatasets.length > 0 ?
                 <div className="d-flex flex-row justify-content-center">
                     <App {...props} myTempDatasets={myTempDatasets}/>
                     </div>
