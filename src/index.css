@@ -27,7 +27,7 @@ body {
 }
 
 button {
-  color: #0c8826;
+  color: #3f6647;
   font-family: "Comfortaa", Arial, sans-serif;
   font-size: 1rem;
   line-height: 1.5;
@@ -91,13 +91,12 @@ font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
 /* General button style */
 .btn {
 border: none;
-
+background-color: rgb(77, 77, 77);
 font-size: inherit;
-color: inherit;
-background: none;
+color: white;
 cursor: pointer;
   padding: 0.35rem 1.5rem;
-  box-shadow: 0.25rem 0.25rem 0.7rem #345169;
+  box-shadow: 0.25rem 0.25rem 0.7rem #272829;
 display: inline-block;
 margin: 0.5rem 0.75rem;
 text-transform: uppercase;
@@ -109,6 +108,8 @@ position: relative;
 -moz-transition: all 0.3s;
 transition: all 0.3s;
 }
+
+
 
 .btn:after {
 content: '';
@@ -248,4 +249,26 @@ content: "🌟";
 
 .icon-send:before {
 content: "🔓";
+}
+
+.btn-outline-primary:hover {
+  color: #fff;
+  background-color: #282e2c;
+  border-color: #041610;
+}
+
+.btn-outline-primary:not(:disabled):not(.disabled):active, .btn-outline-primary:not(:disabled):not(.disabled).active, .show > .btn-outline-primary.dropdown-toggle {
+  color: #fff;
+  background-color: #2f3e4e;
+  border-color: #00ffea;
+}
+
+.btn-outline-primary:focus, .btn-outline-primary.focus {
+  box-shadow: 0 0 0 0.2rem rgb(77 77 77 / 50%);
+}
+
+a {
+  color: #262627;
+  text-decoration: none;
+  background-color: transparent;
 }

@@ -14,7 +14,7 @@ export default (props) => (
         </div>
         <div className="d-flex flex-row justify-content-center">
             {/* <img className="mb-5 img-fluid" src="https://via.placeholder.com/400x200" /> */}
-            <img className="mb-5 img-fluid" src="https://images.unsplash.com/photo-1614846027182-cecfee3a427b?ixid=MXwxMjA3fDB8MHxzZWFyY2h8NDl8fHNlbnNvcnxlbnwwfHwwfA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" />
+            <img className="mb-5  rounded" src="https://images.unsplash.com/photo-1614846027182-cecfee3a427b?ixid=MXwxMjA3fDB8MHxzZWFyY2h8NDl8fHNlbnNvcnxlbnwwfHwwfA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" />
         </div>
         <div className="d-flex flex-row justify-content-between align-items-center">
             <div className="">Author: {props.device.appuser && props.device.appuser.user.first_name} {props.device.appuser && props.device.appuser.user.last_name}</div>
