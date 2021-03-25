@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Chart from "react-apexcharts";
+import moment from 'moment';
 
 class App extends Component {
   constructor(props) {
@@ -19,7 +20,7 @@ class App extends Component {
     console.log(sensor_type_id)
     if(sensor_type_id){
                 if(sensor_type_id === 1){
-                  const timestamps = myDatasets.map((dataset) => dataset.timestamp)
+                  const timestamps = myDatasets.map((dataset) => moment(dataset.timestamp).format('lll'))
                   const temps = myDatasets.map((dataset) => parseInt(dataset.temp))
 
                   this.state = {
@@ -40,7 +41,7 @@ class App extends Component {
                   };
                 }
                 else if(sensor_type_id === 2){
-                  const timestamps = myDatasets.map((dataset) => dataset.timestamp)
+                  const timestamps = myDatasets.map((dataset) => moment(dataset.timestamp).format('lll'))
                   const temps = myDatasets.map((dataset) => parseInt(dataset.temp))
                   const humis = myDatasets.map((dataset) => parseInt(dataset.humi))
 
@@ -91,7 +92,7 @@ class App extends Component {
   render() {
     return (
       <div className="app">
-        <div className="row">
+        <div className="row ">
           <div className="mixed-chart">
             <Chart
               options={this.state.options}
