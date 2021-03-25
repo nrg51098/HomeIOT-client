@@ -62,6 +62,7 @@ export const TagList = (props) => {
                   <button className="btn btn-outline-primary" onClick={e => deleteTagDialog.current.close()}>Close</button>
                 </div>
             </dialog>
+            
         <div className="allTags">
           {
             tags.map(tag => <Tag key={tag.id} tag={tag} deleteTagDialog={deleteTagDialog} setDeletedTagId={setDeletedTagId} editATag={editATag} />)
@@ -70,10 +71,10 @@ export const TagList = (props) => {
         <div> 
           <div className="addTagForm d-flex flex-column justify-content-around align-items-center">
             <h2>Create a new tag</h2>
-            <input className="tagInput" type="text" placeholder="Add text" value={newTag} onChange={e => {
+            <input className="form-control" type="text" placeholder="Add text" value={newTag} onChange={e => {
               setNewTag(e.target.value)
             }}></input>
-            <button className="createTag" onClick={handleInput}>Create</button>
+            <button className="btn btn-outline-dark" onClick={handleInput}>Create</button>
           </div>
         </div>
       </div>

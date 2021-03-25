@@ -58,7 +58,7 @@ export const Register = (props) => {
             <form className="form--login" onSubmit={handleRegister}>
                 <div className="d-flex flex-row justify-content-center align-items-center mt-5">
                     <div className="d-flex flex-column w-100 text-center mr-5">
-                        <img className="mb-5 img-fluid" src="https://via.placeholder.com/300x200" />
+                        <img className="mb-5 rounded" src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixid=MXwxMjA3fDB8MHxzZWFyY2h8MXx8Y29tcHV0ZXIlMjBkYXNoYm9hcmR8ZW58MHx8MHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" />
                         <input ref={firstName} name="firstName" type="text" id="register--first-name" className="form-control mb-5" placeholder="First Name" required autoFocus />
                         <input ref={lastName} name="lastname" type="text" id="register--last-name" className="form-control mb-5" placeholder="Last Name" required />
                         <input ref={email} name="email" type="email" id="register--email" className="form-control mb-5" placeholder="Email" required />

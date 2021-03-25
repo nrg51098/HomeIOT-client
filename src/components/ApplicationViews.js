@@ -46,7 +46,7 @@ export const ApplicationViews = () => {
                             {
                                 isAdmin
                                     ? <main className="tagsContainer">
-                                        <h1>Available Tags</h1>
+                                        <h1 className="ml-5">Available Tags</h1>
                                         <TagList {...props} />
                                     </main>
                                     : <Redirect to="/" />
@@ -104,7 +104,7 @@ export const ApplicationViews = () => {
                             {
                                 isAdmin
                                     ? <main className="locationsContainer">
-                                        <h1>Available Locations</h1>
+                                        <h1 className="ml-5">Available Locations</h1>
                                         <LocationList {...props} />
                                     </main>
                                     : <Redirect to="/" />
@@ -120,7 +120,7 @@ export const ApplicationViews = () => {
                             {
                                 isAdmin
                                     ? <main className="sensortypesContainer">
-                                        <h1>Available Sensortypes</h1>
+                                        <h1 className="ml-5">Available Sensortypes</h1>
                                         <SensortypeList {...props} />
                                     </main>
                                     : <Redirect to="/" />
