@@ -5,6 +5,7 @@ import { SubscriptionContext } from "../subscriptions/SubscriptionProvider"
 import { TempDatasetsContext } from "../tempdatasets/TempDatasetsProvider"
 import { TempHumiDatasetsContext } from "../temphumidatasets/TempHumiDatasetsProvider"
 import App from "./SampleChart"
+import moment from 'moment';
 
 import "./Devices.css"
 
@@ -166,7 +167,7 @@ export const DeviceDetails = (props) => {
                     
                 </div> 
                 
-                <div className="d-flex justify-content-center text-center">Created on {device.created_datetime}</div> 
+                <div className="d-flex justify-content-center text-center">Created on {moment(device.created_datetime).format('lll')}</div> 
 
                 
 
