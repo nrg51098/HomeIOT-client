@@ -3,7 +3,7 @@ import { AuthContext } from '../auth/AuthProvider'
 import { Link, useHistory } from "react-router-dom"
 
 import "./NavBar.css"
-import Logo from "./homeiot.jpeg"
+import Logo from "./homeiot.jpg"
 
 export const NavBar = () => {
     const { getUserAdminStatus, isAdmin } = useContext(AuthContext);
@@ -18,7 +18,7 @@ export const NavBar = () => {
             <div className="d-flex flex-row flex-nowrap">
                 <li className="navbar__item mx-3">
                     <Link to="/">
-                        <img className="navbar__logo" alt="" src={Logo} />
+                        <img className="navbar__logo rounded-circle" alt="" src={Logo} />
                     </Link>
                 </li>
                 <li className="navbar__item mx-3">

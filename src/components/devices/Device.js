@@ -11,7 +11,7 @@ export default (props) => (
                     {props.device.name}
                 </Link>
             </h3>
-            <small>Create DateTime: {moment(props.device.created_datetime).format('lll')}</small>
+            <small>Created DateTime: {moment(props.device.created_datetime).format('lll')}</small>
         </div>
         <div className="d-flex flex-row justify-content-center">
             {/* <img className="mb-5 img-fluid" src="https://via.placeholder.com/400x200" /> */}

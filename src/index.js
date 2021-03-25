@@ -9,7 +9,7 @@ import { HomeIOT } from "./components/homeiot.js";
 ReactDOM.render(
     <React.StrictMode>
         <Router>
-            <HomeIOT />
+            <HomeIOT className="homeiot"/>
         </Router>
     </React.StrictMode>,
     document.getElementById("root")
