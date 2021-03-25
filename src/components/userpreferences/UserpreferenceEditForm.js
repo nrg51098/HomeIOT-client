@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react"
+import React, { useContext, useEffect, useRef, useState, Fragment } from "react"
 import { Link } from "react-router-dom"
 import { UserpreferenceContext } from "./UserpreferenceProvider"
 import { TempThresholdContext } from "../tempthresholds/TempThresholdProvider"
@@ -12,7 +12,7 @@ export const UserpreferenceEditForm = (props) => {
 
     
     const { getCurrentUserpreference, currentUserpreference, updateUserpreference } = useContext(UserpreferenceContext)
-    const { tempThresholds, getTempThresholds, getTempThresholdsByAppuserId, updateTempThreshold } = useContext(TempThresholdContext)
+    const { tempThresholds, getTempThresholdsByAppuserId, updateTempThreshold } = useContext(TempThresholdContext)
     const [selectedUserpreferences, setSelectedUserpreference] = useState({})
     const [userTempThresholds, setUserTempThresholds] = useState([])
 
@@ -31,8 +31,9 @@ export const UserpreferenceEditForm = (props) => {
             console.log(currentUserpreference[0].id)
             getTempThresholdsByAppuserId(currentUserpreference[0].id)
                 
+            console.log(tempThresholds)
         }           
-    }, [tempThresholds, currentUserpreference])
+    }, [currentUserpreference])
 
     const handleControlledInputChange = (event) => {
         const newSelectedUserpreferences = Object.assign({}, selectedUserpreferences)  
@@ -69,6 +70,17 @@ export const UserpreferenceEditForm = (props) => {
 
     return (
         <main className="container-md vh-100">
+            
+                
+                { tempThresholds && tempThresholds.map(tempThreshold => (
+                                <Fragment key={tempThreshold.id}>
+                                    <label for="quantity">Min temp</label>
+                                    <input type="number" name="tempThreshold" id={tempThreshold.id} min="0" max="100" step="1" value={tempThresholds && parseInt(tempThresholds[0].min_temp)}></input> 
+                                                                       
+                                </Fragment>
+                            ))                
+                }
+            
             
             <header className="mt-5 text-center">
                 <h1>HomeIOT</h1>

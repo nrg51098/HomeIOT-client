@@ -3,7 +3,7 @@ import React, { useState } from "react"
 export const TempThresholdContext = React.createContext()
 
 export const TempThresholdProvider = (props) => {
-  const [tempthresholds, setTempThresholds] = useState([])
+  const [tempThresholds, setTempThresholds] = useState([])
   
 
   const getTempThresholds = () => {
@@ -92,7 +92,7 @@ export const TempThresholdProvider = (props) => {
   
   return (
     <TempThresholdContext.Provider value={{
-      tempthresholds, getTempThresholds, updateTempThreshold, getTempThresholdsByAppuserId 
+      tempThresholds, getTempThresholds, updateTempThreshold, getTempThresholdsByAppuserId 
       
     }}>
       {props.children}
