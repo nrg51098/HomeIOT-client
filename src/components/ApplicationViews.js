@@ -25,6 +25,7 @@ import { SubscriptionProvider } from "./subscriptions/SubscriptionProvider.js"
 import { TempDatasetsProvider } from "./tempdatasets/TempDatasetsProvider.js"
 import { TempHumiDatasetsProvider } from "./temphumidatasets/TempHumiDatasetsProvider.js"
 import { ButtonDatasetsProvider } from "./buttondatasets/ButtonDatasetsProvider.js"
+import { TempThresholdProvider } from "./tempthresholds/TempThresholdProvider.js"
 
 
 export const ApplicationViews = () => {
@@ -148,6 +149,7 @@ export const ApplicationViews = () => {
                     } 
                 /> 
                 <UserpreferenceProvider>
+                    <TempThresholdProvider>
                 <Route exact path="/userpreferences" render={
                         props => <UserpreferenceDetail {...props} />
                     } />
@@ -155,6 +157,7 @@ export const ApplicationViews = () => {
                 <Route path="/userpreferences/user/:userpreferenceId(\d+)" render={
                         props => <UserpreferenceEditForm {...props} />
                     } />
+                    </TempThresholdProvider>
                 </UserpreferenceProvider>
                 <SubscriptionProvider>
                 <Route exact path="/subscriptions" render={
