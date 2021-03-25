@@ -124,7 +124,7 @@ export const DeviceDetails = (props) => {
                     </div>
                 :
                 <div className="text-center">
-                <img className="mb-5 img-fluid w-100" src="https://via.placeholder.com/400x100" />
+                <img className="mb-5 rounded w-50" src="https://images.unsplash.com/photo-1543286386-713bdd548da4?ixid=MXwxMjA3fDB8MHxzZWFyY2h8MXx8Z3JhcGh8ZW58MHx8MHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" />
                 </div>                
                 }
                 
@@ -173,7 +173,7 @@ export const DeviceDetails = (props) => {
                 <div className="d-flex justify-content-center text-center">Tags:</div>  
                 <div className="d-flex justify-content-center text-center">           
                     {device.tag && device.tag.map(tg => (
-                        <div key={tg.id} className="border border-primary rounded px-5 m-3">{tg.label}</div>
+                        <div key={tg.id} className="border border-dark rounded px-5 m-3">{tg.label}</div>
                     ))} 
                 </div> 
 
