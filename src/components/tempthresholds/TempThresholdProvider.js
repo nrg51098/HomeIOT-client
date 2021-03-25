@@ -16,6 +16,17 @@ export const TempThresholdProvider = (props) => {
       .then(setTempThresholds)
   }
 
+
+  const getTempThresholdsByAppuserId = (appuserId) => {
+    return fetch(`http://localhost:8000/tempthresholds?appuser_id=${appuserId}`, {
+      headers: {
+          "Authorization": `Token ${localStorage.getItem("homeiot_user_id")}`
+      }
+  })
+      .then(res => res.json())
+      .then(setTempThresholds)
+  }
+
 //   const createtempThreshold = tempthreshold => {
 //     return fetch("http://localhost:8000/tempthresholds", {
 //       method: "POST",
@@ -81,7 +92,7 @@ export const TempThresholdProvider = (props) => {
   
   return (
     <TempThresholdContext.Provider value={{
-      tempthresholds, getTempThresholds, updateTempThreshold, 
+      tempthresholds, getTempThresholds, updateTempThreshold, getTempThresholdsByAppuserId 
       
     }}>
       {props.children}

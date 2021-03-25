@@ -12,17 +12,27 @@ export const UserpreferenceEditForm = (props) => {
 
     
     const { getCurrentUserpreference, currentUserpreference, updateUserpreference } = useContext(UserpreferenceContext)
+    const { tempThresholds, getTempThresholds, getTempThresholdsByAppuserId, updateTempThreshold } = useContext(TempThresholdContext)
     const [selectedUserpreferences, setSelectedUserpreference] = useState({})
+    const [userTempThresholds, setUserTempThresholds] = useState([])
 
     useEffect(() => {
         getCurrentUserpreference()
-               
+                       
     },[])   
 
     useEffect(() => {
         setSelectedUserpreference(currentUserpreference[0]) 
         console.log(currentUserpreference)              
     },[currentUserpreference]) 
+
+    useEffect(() => {
+        if(currentUserpreference.length > 0){
+            console.log(currentUserpreference[0].id)
+            getTempThresholdsByAppuserId(currentUserpreference[0].id)
+                
+        }           
+    }, [tempThresholds, currentUserpreference])
 
     const handleControlledInputChange = (event) => {
         const newSelectedUserpreferences = Object.assign({}, selectedUserpreferences)  
