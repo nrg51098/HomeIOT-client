@@ -83,3 +83,9 @@
 .cursor__pointer {
     cursor: pointer;
 }
+
+.alldevices a {
+    color: #e4e4ee;
+    text-decoration: none;
+    background-color: transparent;
+}

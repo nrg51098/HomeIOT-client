@@ -3,17 +3,22 @@ import { useHistory } from 'react-router-dom'
 import { DeviceContext } from "./DeviceProvider"
 import { SubscriptionContext } from "../subscriptions/SubscriptionProvider"
 import { TempDatasetsContext } from "../tempdatasets/TempDatasetsProvider"
+import { TempHumiDatasetsContext } from "../temphumidatasets/TempHumiDatasetsProvider"
+import App from "./SampleChart"
+import moment from 'moment';
 
 import "./Devices.css"
 
 export const DeviceDetails = (props) => {
     const { getDeviceById, releaseDevice } = useContext(DeviceContext)
     const { getSubscriptionsByCurrentUserId, subscriptions, deleteSubscription, createSubscription } = useContext(SubscriptionContext)
-    const { tempDatasets, getTempDatasetsByDeviceId, createTempDataset } = useContext(TempDatasetsContext)
+    const { tempDatasets, getTempDatasetsByDeviceId } = useContext(TempDatasetsContext)
+    const { tempHumiDatasets, getTempHumiDatasetsByDeviceId } = useContext(TempHumiDatasetsContext)
     
     const history = useHistory();
     const deleteDeviceModal = useRef();
 
+    const [myDatasets, setMyDatasets] = useState([])
     const [device, setDevice] = useState({})
     const [currentSub, setCurrentSub] = useState(-1)
     const [isDeviceSubscribed, setIsDeviceSubscribed] = useState(false)
@@ -25,15 +30,32 @@ export const DeviceDetails = (props) => {
             .then(setDevice)
 
         getSubscriptionsByCurrentUserId()
-
     }, [])
+
+    useEffect(() =>{
+        
+        const deviceId = parseInt(props.match.params.deviceId)
+        console.log(device)
+        if(device.sensor_type){
+            console.log(device.sensor_type.id)
+            if(device.sensor_type.id === 1){                          
+                getTempDatasetsByDeviceId(deviceId)               
+            }
+            else if(device.sensor_type.id === 2){                          
+                getTempHumiDatasetsByDeviceId(deviceId)               
+            }              
+        }
+        
+    }, [device])
+
+
 
     useEffect(() =>{
         const deviceId = parseInt(props.match.params.deviceId)
         
         if (subscriptions) {
             const tempSub = subscriptions.filter(sub => sub.device.id === deviceId)
-            console.log(tempSub)
+            
             if(tempSub && tempSub.length > 0){
                 setIsDeviceSubscribed(true)                
                 setCurrentSub(tempSub[0].id)                
@@ -43,6 +65,19 @@ export const DeviceDetails = (props) => {
         }       
         
     }, [subscriptions])
+
+
+    useEffect(()=>{
+        if(tempDatasets){
+            setMyDatasets(tempDatasets)
+        }
+    }, [tempDatasets])
+
+    useEffect(()=>{
+        if(tempHumiDatasets){
+            setMyDatasets(tempHumiDatasets)
+        }
+    }, [tempHumiDatasets])    
     
     const handleCheckboxChange = (event) => {
         if(event.target.checked){
@@ -65,6 +100,8 @@ export const DeviceDetails = (props) => {
         }                                       
     }
 
+
+
     return (
         <section className="device d-flex flex-row">
             <dialog className="dialog dialog--deleteDevice" ref={deleteDeviceModal}>
@@ -81,7 +118,20 @@ export const DeviceDetails = (props) => {
             <div className="device_details d-flex flex-column container mr-0">
                 <h3 className="device__title text-center">Device Name: {device.name}</h3>
 
-                <div className="d-flex flex-row justify-content-between">
+                
+                {myDatasets.length > 0 ?
+                <div className="d-flex flex-row justify-content-center">
+                    <App {...props} myDatasets={myDatasets} sensor_type_id={device.sensor_type.id}/>
+                    </div>
+                :
+                <div className="text-center">
+                <img className="mb-5 rounded w-50" src="https://images.unsplash.com/photo-1543286386-713bdd548da4?ixid=MXwxMjA3fDB8MHxzZWFyY2h8MXx8Z3JhcGh8ZW58MHx8MHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" />
+                </div>                
+                }
+                
+
+                
+                <div className="d-flex flex-row justify-content-center">
                     <div className="device__manage__buttons">
                         <i className="fas fa-trash-alt device__hover__delete" onClick={() => {
                             deleteDeviceModal.current.showModal()
@@ -91,11 +141,7 @@ export const DeviceDetails = (props) => {
                     
                 </div>
 
-                
 
-                <div className="text-center">
-                    <img className="mb-5 img-fluid w-100" src="https://via.placeholder.com/400x100" />
-                </div>
 
                 <fieldset>
                     <div className="d-flex justify-content-center">
@@ -109,6 +155,8 @@ export const DeviceDetails = (props) => {
 
                 
 
+                
+
                 <div className="d-flex justify-content-center text-center">
                         <div >Location: {device.location && device.location.label}</div>
                 </div>
@@ -119,14 +167,14 @@ export const DeviceDetails = (props) => {
                     
                 </div> 
                 
-                <div className="d-flex justify-content-center text-center">Created on {device.created_datetime}</div> 
+                <div className="d-flex justify-content-center text-center">Created on {moment(device.created_datetime).format('lll')}</div> 
 
                 
 
                 <div className="d-flex justify-content-center text-center">Tags:</div>  
                 <div className="d-flex justify-content-center text-center">           
                     {device.tag && device.tag.map(tg => (
-                        <div key={tg.id} className="border border-primary rounded px-5 m-3">{tg.label}</div>
+                        <div key={tg.id} className="border border-dark rounded px-5 m-3">{tg.label}</div>
                     ))} 
                 </div> 
 

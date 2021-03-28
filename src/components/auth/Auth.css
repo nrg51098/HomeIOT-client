@@ -60,3 +60,16 @@ fieldset {
     min-width: 30rem;
     min-height: 10rem;
 }
+
+h1 {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+      monospace;
+  }
+
+  .form-control:focus {
+    color: #495057;
+    background-color: #fff;
+    border-color: #353636;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgb(77 77 77 / 25%);
+}

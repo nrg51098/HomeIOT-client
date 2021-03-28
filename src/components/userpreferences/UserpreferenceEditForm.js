@@ -1,6 +1,7 @@
-import React, { useContext, useEffect, useRef, useState } from "react"
+import React, { useContext, useEffect, useRef, useState, Fragment } from "react"
 import { Link } from "react-router-dom"
 import { UserpreferenceContext } from "./UserpreferenceProvider"
+import { TempThresholdContext } from "../tempthresholds/TempThresholdProvider"
 
 
 export const UserpreferenceEditForm = (props) => {
@@ -11,17 +12,28 @@ export const UserpreferenceEditForm = (props) => {
 
     
     const { getCurrentUserpreference, currentUserpreference, updateUserpreference } = useContext(UserpreferenceContext)
+    const { tempThresholds, getTempThresholdsByAppuserId, updateTempThreshold } = useContext(TempThresholdContext)
     const [selectedUserpreferences, setSelectedUserpreference] = useState({})
+    const [userTempThresholds, setUserTempThresholds] = useState([])
 
     useEffect(() => {
         getCurrentUserpreference()
-               
+                       
     },[])   
 
     useEffect(() => {
         setSelectedUserpreference(currentUserpreference[0]) 
         console.log(currentUserpreference)              
     },[currentUserpreference]) 
+
+    useEffect(() => {
+        if(currentUserpreference.length > 0){
+            console.log(currentUserpreference[0].id)
+            getTempThresholdsByAppuserId(currentUserpreference[0].id)
+                
+            console.log(tempThresholds)
+        }           
+    }, [currentUserpreference])
 
     const handleControlledInputChange = (event) => {
         const newSelectedUserpreferences = Object.assign({}, selectedUserpreferences)  
@@ -35,6 +47,12 @@ export const UserpreferenceEditForm = (props) => {
         const newSelectedUserpreferences = Object.assign({}, selectedUserpreferences)          // Create copy
         newSelectedUserpreferences[event.target.name] = event.target.checked    // Modify copy
         setSelectedUserpreference(newSelectedUserpreferences)                                 // Set copy as new state
+    }
+
+    const handleNumberChange = (event) => {
+        
+                  // Create copy
+        
     }
 
     const handleChange = (e) => {
@@ -57,7 +75,8 @@ export const UserpreferenceEditForm = (props) => {
     }
 
     return (
-        <main className="container-md vh-100">
+        <main className="container-md vh-100">   
+                
             
             <header className="mt-5 text-center">
                 <h1>HomeIOT</h1>
@@ -93,7 +112,18 @@ export const UserpreferenceEditForm = (props) => {
                                 </input>
                                 <label htmlFor="threshold_notification" className="form-check-label"> Threshold notification</label>
                             </div>
-                            </fieldset>            
+                            </fieldset> 
+
+                            { tempThresholds && tempThresholds.map(tempThreshold => (
+                                <Fragment key={tempThreshold.id}>
+                                    <label for="quantity">Min Temp Threshold</label>
+                                    <input type="number" name="mintempThreshold"  min="0" max="100" step="1" value={tempThresholds && parseInt(tempThresholds[0].min_temp)} onChange={event => this.setState({min_temp: event.target.value.replace(/\D/,'')})}></input> 
+                                    <label for="quantity">Max Temp Threshold</label>
+                                    <input className="mb-5" type="number" name="maxtempThreshold"  min="0" max="100" step="1" value={tempThresholds && parseInt(tempThresholds[0].max_temp)} onChange={handleNumberChange}></input>                                                                      
+                                </Fragment>
+                            ))                
+                }
+                       
                         
                         
                     </div>

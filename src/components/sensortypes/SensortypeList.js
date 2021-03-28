@@ -70,10 +70,10 @@ export const SensortypeList = (props) => {
         <div> 
           <div className="addSensortypeForm d-flex flex-column justify-content-around align-items-center">
             <h2>Create a new sensortype</h2>
-            <input className="sensortypeInput" type="text" placeholder="Add text" value={newSensortype} onChange={e => {
+            <input className="form-control" type="text" placeholder="Add text" value={newSensortype} onChange={e => {
               setNewSensortype(e.target.value)
             }}></input>
-            <button className="createSensortype" onClick={handleInput}>Create</button>
+            <button className="btn btn-outline-dark" onClick={handleInput}>Create</button>
           </div>
         </div>
       </div>

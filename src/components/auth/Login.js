@@ -47,11 +47,11 @@ export const Login = () => {
                 <button className="button--close" onClick={e => errorDialog.current.close()}>Close</button>
             </dialog>
             <header>
-                <h1 className="mt-5 text-center">Rare</h1>
+                <h1 className="mt-5 text-center">Welcome to your HOME</h1>
             </header>
-            <div className="mt-5">
-                <div className="d-flex flex-column justify-content-center align-items-center">
-                    <img className="mt-5" src="https://via.placeholder.com/200x75" />
+            <div className="">
+                <div className="d-flex  justify-content-center ">
+                    <img width="300" className="mt-5 rounded" src="https://images.unsplash.com/photo-1507646227500-4d389b0012be?ixid=MXwxMjA3fDB8MHxzZWFyY2h8MXx8aG9tZSUyMGlvdHxlbnwwfHwwfA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" />
                 </div>
             </div>
             <div className="d-flex flex-column justify-content-center align-items-center h-50">

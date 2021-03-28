@@ -23,13 +23,18 @@ import { UserpreferenceProvider } from "./userpreferences/UserpreferenceProvider
 import { SubscriptionTable } from "./subscriptions/SubscriptionTable.js"
 import { SubscriptionProvider } from "./subscriptions/SubscriptionProvider.js"
 import { TempDatasetsProvider } from "./tempdatasets/TempDatasetsProvider.js"
+import { TempHumiDatasetsProvider } from "./temphumidatasets/TempHumiDatasetsProvider.js"
+import { ButtonDatasetsProvider } from "./buttondatasets/ButtonDatasetsProvider.js"
+import { TempThresholdProvider } from "./tempthresholds/TempThresholdProvider.js"
 
 
 export const ApplicationViews = () => {
     const { isAdmin } = useContext(AuthContext);
 
     return <>
+    <div className="d-flex flex-wrap w-100">
         <NavBar />
+        </div>
         <main style={{
             margin: "1rem 2rem",
             lineHeight: "1.75rem"
@@ -42,7 +47,7 @@ export const ApplicationViews = () => {
                             {
                                 isAdmin
                                     ? <main className="tagsContainer">
-                                        <h1>Available Tags</h1>
+                                        <h1 className="ml-5">Available Tags</h1>
                                         <TagList {...props} />
                                     </main>
                                     : <Redirect to="/" />
@@ -54,6 +59,8 @@ export const ApplicationViews = () => {
                                     <DeviceProvider>
                                         <SubscriptionProvider>
                                             <TempDatasetsProvider>
+                                                <TempHumiDatasetsProvider>
+                                                    <ButtonDatasetsProvider>
                                                             <Route exact path="/">
                                                                 <DeviceList />
                                                             </Route>
@@ -84,6 +91,8 @@ export const ApplicationViews = () => {
                                                             <Route path="/devices/edit/:deviceId(\d+)" render={
                                                                     props => <DeviceForm {...props} />
                                                                 } />
+                                                    </ButtonDatasetsProvider> 
+                                                </TempHumiDatasetsProvider>           
                                             </TempDatasetsProvider>
                                         </SubscriptionProvider>    
                                     </DeviceProvider> 
@@ -96,7 +105,7 @@ export const ApplicationViews = () => {
                             {
                                 isAdmin
                                     ? <main className="locationsContainer">
-                                        <h1>Available Locations</h1>
+                                        <h1 className="ml-5">Available Locations</h1>
                                         <LocationList {...props} />
                                     </main>
                                     : <Redirect to="/" />
@@ -112,7 +121,7 @@ export const ApplicationViews = () => {
                             {
                                 isAdmin
                                     ? <main className="sensortypesContainer">
-                                        <h1>Available Sensortypes</h1>
+                                        <h1 className="ml-5">Available Sensortypes</h1>
                                         <SensortypeList {...props} />
                                     </main>
                                     : <Redirect to="/" />
@@ -140,6 +149,7 @@ export const ApplicationViews = () => {
                     } 
                 /> 
                 <UserpreferenceProvider>
+                    <TempThresholdProvider>
                 <Route exact path="/userpreferences" render={
                         props => <UserpreferenceDetail {...props} />
                     } />
@@ -147,6 +157,7 @@ export const ApplicationViews = () => {
                 <Route path="/userpreferences/user/:userpreferenceId(\d+)" render={
                         props => <UserpreferenceEditForm {...props} />
                     } />
+                    </TempThresholdProvider>
                 </UserpreferenceProvider>
                 <SubscriptionProvider>
                 <Route exact path="/subscriptions" render={

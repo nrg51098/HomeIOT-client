@@ -70,10 +70,10 @@ export const LocationList = (props) => {
         <div> 
           <div className="addLocationForm d-flex flex-column justify-content-around align-items-center">
             <h2>Create a new location</h2>
-            <input className="locationInput" type="text" placeholder="Add text" value={newLocation} onChange={e => {
+            <input className="form-control" type="text" placeholder="Add text" value={newLocation} onChange={e => {
               setNewLocation(e.target.value)
             }}></input>
-            <button className="createLocation" onClick={handleInput}>Create</button>
+            <button className="btn btn-outline-dark" onClick={handleInput}>Create</button>
           </div>
         </div>
       </div>

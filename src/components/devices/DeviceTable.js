@@ -4,6 +4,7 @@ import { DeviceContext } from "./DeviceProvider"
 import { TagContext } from "../tags/TagProvider"
 import { AuthContext } from '../auth/AuthProvider'
 import "./Devices.css"
+import moment from 'moment';
 
 export const DeviceTable = () => {
     const { getDevices, devices, searchTerms, releaseDevice, partialyUpdateDevice } = useContext(DeviceContext)
@@ -90,8 +91,8 @@ export const DeviceTable = () => {
                     <i className="fas fa-plus ml-4 mr-2"></i>
                 </button>
             </div>
-            <div className="devices device__table mt-5 mx-3 px-3">
-                <table className="table table-bordered table-striped">
+            <div className=" devices device__table mt-5 mx-3 px-3">
+                <table className="alldevices table table-bordered table-hover table-dark table-striped">
                     <thead>
                         <tr>
                             <th scope="col"></th>
@@ -101,8 +102,8 @@ export const DeviceTable = () => {
                             <th scope="col">Location</th>
                             <th scope="col">Sensortype</th>
                             <th scope="col">Tags</th>
-                            {isAdmin ? (<th scope="col">Is_Active</th>) : (<></>) }
-                            {isAdmin ? (<th scope="col">Is_Public</th>) : (<></>) }
+                            {isAdmin ? (<th scope="col">Is Active?</th>) : (<></>) }
+                            {isAdmin ? (<th scope="col">Is Public?</th>) : (<></>) }
                         </tr>
                     </thead>
                     <tbody>
@@ -123,7 +124,7 @@ export const DeviceTable = () => {
                                         </td>) : <td></td>}
                                     <td><Link to={`/devices/${device.id}`}>{device.name}</Link></td>
                                     <td>{device.appuser && device.appuser.user.first_name} {device.appuser && device.appuser.user.last_name}</td>
-                                    <td>{device.created_datetime}</td>
+                                    <td>{moment(device.created_datetime).format('lll')}</td>
                                     <td>{device.location.label}</td>
                                     <td>{device.sensor_type.label}</td>
                                     <td>{device.tag && device.tag.map(tag => (
