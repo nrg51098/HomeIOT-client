@@ -49,6 +49,12 @@ export const UserpreferenceEditForm = (props) => {
         setSelectedUserpreference(newSelectedUserpreferences)                                 // Set copy as new state
     }
 
+    const handleNumberChange = (event) => {
+        
+                  // Create copy
+        
+    }
+
     const handleChange = (e) => {
         e.preventDefault()
 
@@ -69,18 +75,8 @@ export const UserpreferenceEditForm = (props) => {
     }
 
     return (
-        <main className="container-md vh-100">
-            
+        <main className="container-md vh-100">   
                 
-                { tempThresholds && tempThresholds.map(tempThreshold => (
-                                <Fragment key={tempThreshold.id}>
-                                    <label for="quantity">Min temp</label>
-                                    <input type="number" name="tempThreshold" id={tempThreshold.id} min="0" max="100" step="1" value={tempThresholds && parseInt(tempThresholds[0].min_temp)}></input> 
-                                                                       
-                                </Fragment>
-                            ))                
-                }
-            
             
             <header className="mt-5 text-center">
                 <h1>HomeIOT</h1>
@@ -116,7 +112,18 @@ export const UserpreferenceEditForm = (props) => {
                                 </input>
                                 <label htmlFor="threshold_notification" className="form-check-label"> Threshold notification</label>
                             </div>
-                            </fieldset>            
+                            </fieldset> 
+
+                            { tempThresholds && tempThresholds.map(tempThreshold => (
+                                <Fragment key={tempThreshold.id}>
+                                    <label for="quantity">Min Temp Threshold</label>
+                                    <input type="number" name="mintempThreshold"  min="0" max="100" step="1" value={tempThresholds && parseInt(tempThresholds[0].min_temp)} onChange={event => this.setState({min_temp: event.target.value.replace(/\D/,'')})}></input> 
+                                    <label for="quantity">Max Temp Threshold</label>
+                                    <input className="mb-5" type="number" name="maxtempThreshold"  min="0" max="100" step="1" value={tempThresholds && parseInt(tempThresholds[0].max_temp)} onChange={handleNumberChange}></input>                                                                      
+                                </Fragment>
+                            ))                
+                }
+                       
                         
                         
                     </div>
